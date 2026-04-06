@@ -698,7 +698,7 @@ function addTx(label,val,color){
 
 async function copyLink(){
   var refCode = document.getElementById('refCode').textContent;
-  var link = 'https://mindcash.app/?ref=' + refCode;
+  var link = 'https://cashmindb.netlify.app/?ref=' + refCode;
   if(navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
   toast('🔗 Lien de parrainage copié !');
 }
