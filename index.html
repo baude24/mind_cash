@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCash</title>
+  <!-- Supabase SDK chargé dans le <head> AVANT tout script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  
+</body>
+</html>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--b50:#E6F1FB;--b100:#B5D4F4;--b200:#85B7EB;--b400:#378ADD;--b600:#185FA5;--b800:#0C447C;--b900:#042C53;
+--g50:#EAF3DE;--g600:#3B6D11;--g800:#27500A;
+--am50:#FAEEDA;--am600:#854F0B;
+--r50:#FCEBEB;--r600:#A32D2D;
+--gr50:#F1EFE8;--gr200:#B4B2A9;--gr600:#5F5E5A;
+}
+body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
+#shell{width:100%;max-width:430px;min-height:100vh;background:#f0f4f8;position:relative;overflow:hidden}
+.scr{display:none;min-height:100vh;flex-direction:column}
+.scr.on{display:flex}
+
+/* AUTH */
+#sAuth{background:var(--b900);align-items:center;justify-content:center;padding:2rem}
+.logo-wrap{text-align:center;margin-bottom:2rem}
+.logo-ico{width:68px;height:68px;background:var(--b400);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 12px}
+.logo-wrap h1{color:#fff;font-size:24px;font-weight:600;letter-spacing:-0.5px}
+.logo-wrap p{color:var(--b200);font-size:13px;margin-top:3px}
+.auth-card{background:#fff;border-radius:18px;padding:1.5rem;width:100%;max-width:340px}
+.tabs{display:flex;background:#f0f4f8;border-radius:10px;padding:3px;gap:3px;margin-bottom:1.25rem}
+.tab{flex:1;padding:8px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--gr600)}
+.tab.on{background:var(--b600);color:#fff}
+.frm{display:none}.frm.on{display:block}
+.fld{margin-bottom:1rem}
+.fld label{display:block;font-size:12px;font-weight:500;color:var(--gr600);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px}
+.fld input{width:100%;padding:10px 13px;border:1px solid #dde4ee;border-radius:10px;font-size:14px;background:#f8fafc;color:#111;outline:none}
+.fld input:focus{border-color:var(--b400);background:#fff}
+.btn-main{width:100%;padding:12px;background:var(--b600);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
+.btn-main:hover{background:var(--b800)}
+.btn-main.danger{background:var(--r600)}
+.hint-text{color:var(--b200);font-size:12px;text-align:center;margin-top:1rem}
+
+/* TOPBAR */
+.topbar{background:var(--b800);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-info h2{color:#fff;font-size:15px;font-weight:600}
+.topbar-info p{color:var(--b200);font-size:11px;margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--b400);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600}
+.quit-btn{font-size:11px;color:var(--b100);background:rgba(255,255,255,0.12);border:none;border-radius:6px;padding:4px 9px;cursor:pointer}
+
+/* BALANCE */
+.bal-zone{background:var(--b800);padding:0 16px 16px}
+.bal-card{background:var(--b600);border-radius:16px;padding:1.25rem;text-align:center}
+.bal-lbl{color:var(--b100);font-size:12px;margin-bottom:5px}
+.bal-amt{color:#fff;font-size:34px;font-weight:700;letter-spacing:-1.5px}
+.bal-sub{color:var(--b200);font-size:12px;margin-top:3px}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.qa-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;padding:10px 8px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;justify-content:center}
+.qa-btn:hover{background:rgba(255,255,255,0.25)}
+.qa-ico{font-size:16px}
+
+/* CONTENT */
+.content{flex:1;padding:14px;overflow-y:auto;padding-bottom:76px}
+.sec-title{font-size:11px;font-weight:600;color:var(--gr600);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px}
+
+/* STAT GRID */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:#fff;border:1px solid #e2eaf4;border-radius:12px;padding:12px}
+.stat .lbl{font-size:11px;color:var(--gr600);margin-bottom:4px}
+.stat .val{font-size:22px;font-weight:700;color:var(--b800)}
+.bdg{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:4px;font-weight:500}
+.bdg-g{background:var(--g50);color:var(--g800)}
+.bdg-b{background:var(--b50);color:var(--b800)}
+.bdg-a{background:var(--am50);color:var(--am600)}
+.bdg-r{background:var(--r50);color:var(--r600)}
+
+/* CARD */
+.card{background:#fff;border:1px solid #e2eaf4;border-radius:14px;padding:0 14px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f0f4f8;font-size:13px}
+.row:last-child{border-bottom:none}
+.row-sub{font-size:11px;color:var(--gr600);margin-top:2px}
+.row-val{font-weight:600;color:#111}
+
+/* TASK */
+.task{background:#fff;border:1px solid #e2eaf4;border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.task:hover{border-color:var(--b400)}
+.task-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.task-body{flex:1}
+.task-title{font-size:14px;font-weight:600;color:#111}
+.task-desc{font-size:12px;color:var(--gr600);margin-top:2px}
+.task-rew{font-size:13px;font-weight:700;color:var(--b600);white-space:nowrap}
+.pbar{background:#e8eff8;border-radius:4px;height:5px;margin-top:6px}
+.pfill{background:var(--b400);border-radius:4px;height:5px}
+
+/* DONE badge on tasks */
+.task.done{opacity:0.6;pointer-events:none}
+.task.done .task-rew::after{content:'✓';margin-left:4px;color:var(--g600)}
+
+/* BOTTOM NAV */
+.bnav{position:sticky;bottom:0;background:#fff;border-top:1px solid #e2eaf4;display:flex;padding:6px 0 2px;z-index:50;flex-shrink:0}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px;border:none;background:transparent}
+.ni-ico{font-size:20px}
+.ni-lbl{font-size:10px;color:var(--gr600);font-weight:500}
+.ni.on .ni-lbl{color:var(--b600)}
+
+/* PAGE */
+.pg{display:none}.pg.on{display:block}
+
+/* MODAL */
+.moverlay{display:none;position:absolute;inset:0;background:rgba(4,44,83,0.55);z-index:200;align-items:flex-end}
+.moverlay.on{display:flex}
+.mbox{background:#fff;border-radius:22px 22px 0 0;width:100%;padding:1.5rem;max-height:82vh;overflow-y:auto}
+.mhandle{width:36px;height:4px;background:#dde4ee;border-radius:2px;margin:0 auto 1.25rem}
+.mtitle{font-size:17px;font-weight:700;color:var(--b800);margin-bottom:1.25rem}
+.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem}
+.op-btn{background:var(--b50);border:1px solid #c8ddf5;border-radius:12px;padding:13px 8px;font-size:13px;color:var(--b800);cursor:pointer;font-weight:600;text-align:center}
+.op-btn:hover,.op-btn.sel{background:var(--b600);color:#fff;border-color:var(--b600)}
+.step{display:none}.step.on{display:block}
+.info-box{background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:14px}
+.i-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eef2f8;font-size:13px}
+.i-row:last-child{border-bottom:none}
+.i-lbl{color:var(--gr600)}
+.i-val{font-weight:600;color:#111}
+.suc-ico{width:58px;height:58px;background:var(--g50);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
+.btn-sec{width:100%;margin-top:8px;padding:11px;background:none;border:1px solid #dde4ee;border-radius:12px;cursor:pointer;font-size:13px;color:var(--gr600)}
+
+/* LEVEL BADGES */
+.lvl-badge{display:inline-flex;align-items:center;gap:5px;background:var(--b50);border:1px solid #c8ddf5;border-radius:20px;padding:3px 10px;font-size:12px;color:var(--b800);font-weight:600}
+.lvl1{background:var(--b50);border-color:#b5d4f4;color:var(--b800)}
+.lvl2{background:var(--am50);border-color:#f5d598;color:var(--am600)}
+
+/* TOAST */
+#toast{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);background:var(--b900);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;display:none;z-index:500;white-space:nowrap;pointer-events:none}
+
+/* NOTIF DOT */
+.ndot{width:7px;height:7px;background:#e24b4a;border-radius:50%;display:inline-block;margin-left:3px;vertical-align:middle}
+
+/* AFFIL TREE */
+.tree-node{background:var(--b50);border:1px solid #c8ddf5;border-radius:12px;padding:10px 13px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.tree-indent{margin-left:20px;border-left:2px solid #c8ddf5;padding-left:12px;margin-bottom:6px}
+</style>
+
+<div id="shell">
+
+<div id="sAuth" class="scr on">
+  <div class="logo-wrap">
+    <div class="logo-ico">💸</div>
+    <h1>Mind Cash</h1>
+    <p>Gagnez de l'argent chaque jour</p>
+  </div>
+  <div class="auth-card">
+    <div class="tabs">
+      <button class="tab on" onclick="swTab('login')">Connexion</button>
+      <button class="tab" onclick="swTab('reg')">Inscription</button>
+    </div>
+    <div class="frm on" id="fLogin">
+      <div class="fld"><label>Téléphone ou Email</label><input type="text" placeholder="0XXXXXXXXX" id="lPhone"></div>
+      <div class="fld"><label>Mot de passe</label><input type="password" placeholder="••••••••" id="lPass"></div>
+      <button class="btn-main" onclick="doLogin()">Se connecter</button>
+    </div>
+    <div class="frm" id="fReg">
+      <div class="fld"><label>Nom complet</label><input type="text" placeholder="Jean Dupont" id="rName"></div>
+      <div class="fld"><label>Téléphone</label><input type="tel" placeholder="0XXXXXXXXX" id="rPhone"></div>
+      <div class="fld"><label>Mot de passe</label><input type="password" placeholder="••••••••" id="rPass"></div>
+      <div class="fld"><label>Code parrain (facultatif)</label><input type="text" placeholder="MC-XXXXXX" id="rRef"></div>
+      <button class="btn-main" onclick="doRegister()">Créer mon compte</button>
+    </div>
+  </div>
+  <p class="hint-text">Un dépôt est requis pour activer votre compte</p>
+</div>
+
+<div id="sMain" class="scr">
+  <div class="topbar">
+    <div class="topbar-info">
+      <h2>Bonjour, <span id="uName">Jean</span> 👋</h2>
+      <p>Compte <span id="uStatus" style="color:#7fc97f">actif</span> · ID: <span id="uID">MC-245781</span></p>
+    </div>
+    <div class="topbar-right">
+      <div class="avatar" id="uAvatar">JD</div>
+      <button class="quit-btn" onclick="doLogout()">Quitter</button>
+    </div>
+  </div>
+  <div class="bal-zone">
+    <div class="bal-card">
+      <div class="bal-lbl">Solde disponible</div>
+      <div class="bal-amt" id="balAmt">3 500 <span style="font-size:17px;font-weight:400">FCFA</span></div>
+      <div class="bal-sub">Mis à jour à l'instant</div>
+      <div class="qa-grid">
+        <button class="qa-btn" onclick="openMod('depot')"><span class="qa-ico">📥</span> Dépôt</button>
+        <button class="qa-btn" onclick="openMod('retrait')"><span class="qa-ico">💳</span> Retrait</button>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="pg on" id="pgHome">
+      <div class="stats">
+        <div class="stat"><div class="lbl">Total gagné</div><div class="val">8 200</div><span class="bdg bdg-g">FCFA</span></div>
+        <div class="stat"><div class="lbl">Parrainage</div><div class="val">6</div><span class="bdg bdg-b">filleuls</span></div>
+        <div class="stat"><div class="lbl">Missions</div><div class="val" id="mCount">0</div><span class="bdg bdg-a">faites</span></div>
+        <div class="stat"><div class="lbl">Retraits</div><div class="val">2</div><span class="bdg bdg-g">validés</span></div>
+      </div>
+      <div class="sec-title" style="margin-top:4px">Transactions récentes</div>
+      <div class="card" id="txList">
+        <div class="row"><div><div style="font-weight:600;font-size:13px">Bonus quotidien</div><div class="row-sub">Aujourd'hui 09:30</div></div><div style="color:var(--g600);font-weight:700">+200 FCFA</div></div>
+        <div class="row"><div><div style="font-weight:600;font-size:13px">Pub vidéo regardée</div><div class="row-sub">Hier 18:45</div></div><div style="color:var(--g600);font-weight:700">+50 FCFA</div></div>
+        <div class="row"><div><div style="font-weight:600;font-size:13px">Retrait MTN MoMo</div><div class="row-sub">12/03 14:00</div></div><div style="color:var(--r600);font-weight:700">−2 000 FCFA</div></div>
+        <div class="row"><div><div style="font-weight:600;font-size:13px">Dépôt Airtel Money</div><div class="row-sub">10/03 10:15</div></div><div style="color:var(--g600);font-weight:700">+5 000 FCFA</div></div>
+      </div>
+    </div>
+
+    <div class="pg" id="pgTaches">
+      <div class="sec-title">Bonus quotidien</div>
+      <div class="task" id="tBonus" onclick="claimBonus()">
+        <div class="task-ico" style="background:var(--am50)">🎁</div>
+        <div class="task-body">
+          <div class="task-title">Bonus du jour</div>
+          <div class="task-desc">Disponible toutes les 24h</div>
+          <div class="pbar" style="margin-top:6px;width:100px"><div class="pfill" id="bonusBar" style="width:0%"></div></div>
+        </div>
+        <div class="task-rew">+200 FCFA</div>
+      </div>
+
+      <div class="sec-title" style="margin-top:14px">Publicités</div>
+      <div class="task" id="tAd1" onclick="watchAd(1)">
+        <div class="task-ico" style="background:var(--b50)">📢</div>
+        <div class="task-body"><div class="task-title">Pub courte</div><div class="task-desc">Regarder 30 secondes</div></div>
+        <div class="task-rew">+50 FCFA</div>
+      </div>
+      <div class="task" id="tAd2" onclick="watchAd(2)">
+        <div class="task-ico" style="background:var(--b50)">📺</div>
+        <div class="task-body"><div class="task-title">Pub vidéo premium</div><div class="task-desc">Regarder 60 secondes</div></div>
+        <div class="task-rew">+100 FCFA</div>
+      </div>
+      <div class="task" id="tAd3" onclick="watchAd(3)">
+        <div class="task-ico" style="background:var(--b50)">🎬</div>
+        <div class="task-body"><div class="task-title">Pub sponsorisée</div><div class="task-desc">Regarder 45 secondes</div></div>
+        <div class="task-rew">+75 FCFA</div>
+      </div>
+
+      <div class="sec-title" style="margin-top:14px">Missions spéciales</div>
+      <div class="task" id="tM1" onclick="doMission(1,'Canal Telegram officiel','500')">
+        <div class="task-ico" style="background:var(--b50)">📋</div>
+        <div class="task-body"><div class="task-title">Rejoindre notre canal Telegram</div><div class="task-desc">Page officielle Mind Cash</div></div>
+        <div class="task-rew">+500 FCFA</div>
+      </div>
+      <div class="task" id="tM2" onclick="doMission(2,'Page Facebook officielle','400')">
+        <div class="task-ico" style="background:var(--b50)">📘</div>
+        <div class="task-body"><div class="task-title">Suivre notre page Facebook</div><div class="task-desc">Page officielle Mind Cash</div></div>
+        <div class="task-rew">+400 FCFA</div>
+      </div>
+      <div class="task" id="tM3" onclick="doMission(3,'Compte TikTok créateur','300')">
+        <div class="task-ico" style="background:var(--b50)">🎵</div>
+        <div class="task-body"><div class="task-title">Suivre le créateur sur TikTok</div><div class="task-desc">Compte officiel du créateur</div></div>
+        <div class="task-rew">+300 FCFA</div>
+      </div>
+      <div class="task" id="tM4" onclick="doMission(4,'Chaîne YouTube','600')">
+        <div class="task-ico" style="background:var(--r50)">▶️</div>
+        <div class="task-body"><div class="task-title">S'abonner à notre YouTube</div><div class="task-desc">Chaîne officielle Mind Cash</div></div>
+        <div class="task-rew">+600 FCFA</div>
+      </div>
+      <div id="adminTasks">
+        <div class="task" id="tA1" onclick="doMission('a1','Tâche admin 1','250')">
+          <div class="task-ico" style="background:var(--gr50)">⭐</div>
+          <div class="task-body"><div class="task-title">Laisser un avis 5 étoiles</div><div class="task-desc">Modifiable par l'administrateur</div></div>
+          <div class="task-rew">+250 FCFA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pg" id="pgAffil">
+      <div class="sec-title">Mon lien de parrainage</div>
+      <div onclick="copyLink()" style="background:var(--b50);border:1px solid #c8ddf5;border-radius:12px;padding:13px;font-size:13px;color:var(--b800);word-break:break-all;margin-bottom:12px;cursor:pointer">
+        https://mindcash.app/?ref=MC-<span id="refCode">245781</span>
+        <div style="font-size:11px;margin-top:4px;color:var(--b600);font-weight:600">↑ Appuyer pour copier</div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2eaf4;border-radius:14px;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--b800);margin-bottom:10px">Structure de rémunération</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div style="flex:1;background:var(--b50);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:11px;color:var(--b600);font-weight:600">NIVEAU 1</div>
+            <div style="font-size:20px;font-weight:700;color:var(--b800);margin:4px 0">100 FCFA</div>
+            <div style="font-size:11px;color:var(--b600)">Par filleul direct</div>
+          </div>
+          <div style="flex:1;background:var(--am50);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:11px;color:var(--am600);font-weight:600">NIVEAU 2</div>
+            <div style="font-size:20px;font-weight:700;color:var(--am600);margin:4px 0">50 FCFA</div>
+            <div style="font-size:11px;color:var(--am600)">Par filleul indirect</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--gr600);background:#f8fafc;border-radius:8px;padding:8px">
+          Vous gagnez sur les dépôts et l'activité de vos filleuls sur 2 niveaux.
+        </div>
+      </div>
+
+      <div class="stats" style="margin-bottom:14px">
+        <div class="stat"><div class="lbl">Filleuls N1</div><div class="val">3</div><span class="bdg bdg-b">directs</span></div>
+        <div class="stat"><div class="lbl">Filleuls N2</div><div class="val">3</div><span class="bdg bdg-a">indirects</span></div>
+        <div class="stat"><div class="lbl">Gains N1</div><div class="val">300</div><span class="bdg bdg-g">FCFA</span></div>
+        <div class="stat"><div class="lbl">Gains N2</div><div class="val">150</div><span class="bdg bdg-a">FCFA</span></div>
+      </div>
+
+      <div class="sec-title">Réseau de parrainage</div>
+      <div style="margin-bottom:6px">
+        <div class="tree-node">
+          <div><div style="font-size:13px;font-weight:600">Utilisateur #4892</div><div style="font-size:11px;color:var(--gr600)">Actif · rejoint 01/04 · N1</div></div>
+          <span class="bdg bdg-g">+100 FCFA</span>
+        </div>
+        <div class="tree-indent">
+          <div class="tree-node">
+            <div><div style="font-size:13px;font-weight:600">Utilisateur #6101</div><div style="font-size:11px;color:var(--gr600)">Actif · filleul de #4892 · N2</div></div>
+            <span class="bdg bdg-a">+50 FCFA</span>
+          </div>
+          <div class="tree-node">
+            <div><div style="font-size:13px;font-weight:600">Utilisateur #6245</div><div style="font-size:11px;color:var(--gr600)">Actif · filleul de #4892 · N2</div></div>
+            <span class="bdg bdg-a">+50 FCFA</span>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div><div style="font-size:13px;font-weight:600">Utilisateur #5021</div><div style="font-size:11px;color:var(--gr600)">Actif · rejoint 28/03 · N1</div></div>
+          <span class="bdg bdg-g">+100 FCFA</span>
+        </div>
+        <div class="tree-indent">
+          <div class="tree-node">
+            <div><div style="font-size:13px;font-weight:600">Utilisateur #6380</div><div style="font-size:11px;color:var(--gr600)">Actif · filleul de #5021 · N2</div></div>
+            <span class="bdg bdg-a">+50 FCFA</span>
+          </div>
+        </div>
+        <div class="tree-node">
+          <div><div style="font-size:13px;font-weight:600">Utilisateur #5187</div><div style="font-size:11px;color:var(--gr600)">En attente de dépôt · N1</div></div>
+          <span class="bdg" style="background:var(--gr50);color:var(--gr600)">0 FCFA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pg" id="pgProfil">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--b600);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:700;margin:0 auto 10px" id="profAvatar">JD</div>
+        <div style="font-size:18px;font-weight:700;color:var(--b900)" id="profName">Jean Dupont</div>
+        <div style="font-size:13px;color:var(--gr600);margin-top:3px" id="profPhone">07XXXXXXXX</div>
+        <span class="lvl-badge lvl1" style="margin-top:8px">⭐ Niveau 1 — Starter</span>
+      </div>
+      <div class="card">
+        <div class="row"><div>Solde actuel</div><div class="row-val" id="profBal">3 500 FCFA</div></div>
+        <div class="row"><div>Total gagné</div><div class="row-val">8 200 FCFA</div></div>
+        <div class="row"><div>Total retiré</div><div class="row-val">2 000 FCFA</div></div>
+        <div class="row"><div>Statut compte</div><div class="row-val"><span class="bdg bdg-g">Actif</span></div></div>
+      </div>
+      <button class="btn-main danger" style="margin-top:12px" onclick="doLogout()">Se déconnecter</button>
+    </div>
+
+  </div>
+
+  <div class="bnav">
+    <button class="ni on" id="ni-home" onclick="showPg('Home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" id="ni-Taches" onclick="showPg('Taches')"><span class="ni-ico">✅</span><span class="ni-lbl">Tâches</span></button>
+    <button class="ni" id="ni-Affil" onclick="showPg('Affil')"><span class="ni-ico">👥</span><span class="ni-lbl">Parrainage</span></button>
+    <button class="ni" id="ni-Profil" onclick="showPg('Profil')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </div>
+</div>
+
+<!-- MODAL DEPOT -->
+<div class="moverlay" id="modDepot">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <div class="mtitle">📥 Faire un dépôt</div>
+    <div class="step on" id="dS1">
+      <div class="op-grid">
+        <div class="op-btn" onclick="selOp(this,'MTN MoMo','d')">MTN MoMo</div>
+        <div class="op-btn" onclick="selOp(this,'Airtel Money','d')">Airtel Money</div>
+        <div class="op-btn" onclick="selOp(this,'Orange Money','d')">Orange Money</div>
+        <div class="op-btn" onclick="selOp(this,'Wave','d')">Wave</div>
+      </div>
+      <button class="btn-main" onclick="dNext(2)">Continuer</button>
+      <button class="btn-sec" onclick="closeMod('depot')">Annuler</button>
+    </div>
+    <div class="step" id="dS2">
+      <div class="fld"><label>Numéro de dépôt</label><input type="tel" placeholder="0XXXXXXXXX" id="dNum"></div>
+      <div class="fld"><label>Montant (FCFA)</label><input type="number" placeholder="500" id="dMt"></div>
+      <button class="btn-main" onclick="dNext(3)">Confirmer</button>
+      <button class="btn-sec" onclick="closeMod('depot')">Annuler</button>
+    </div>
+    <div class="step" id="dS3">
+      <div class="suc-ico">✅</div>
+      <p style="text-align:center;font-weight:700;font-size:16px;color:var(--b800);margin-bottom:6px">Dépôt soumis !</p>
+      <div class="info-box">
+        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val" id="dOpConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Numéro</span><span class="i-val" id="dNumConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Montant</span><span class="i-val" id="dMtConf">—</span></div>
+      </div>
+      <button class="btn-main" onclick="closeMod('depot')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RETRAIT -->
+<div class="moverlay" id="modRetrait">
+  <div class="mbox">
+    <div class="mhandle"></div>
+    <div class="mtitle">💳 Retrait</div>
+    <div class="step on" id="rS1">
+      <div class="op-grid">
+        <div class="op-btn" onclick="selOp(this,'MTN MoMo','r')">MTN MoMo</div>
+        <div class="op-btn" onclick="selOp(this,'Airtel Money','r')">Airtel Money</div>
+        <div class="op-btn" onclick="selOp(this,'Orange Money','r')">Orange Money</div>
+        <div class="op-btn" onclick="selOp(this,'Wave','r')">Wave</div>
+      </div>
+      <button class="btn-main" onclick="rNext(2)">Continuer</button>
+    </div>
+    <div class="step" id="rS2">
+      <div style="background:var(--b50);border-radius:10px;padding:10px 13px;margin-bottom:14px;font-size:13px;color:var(--b800)">
+        Solde : <strong id="soldeDispo">3 500 FCFA</strong> · Minimum : 1 000 FCFA
+      </div>
+      <div class="fld"><label>Numéro Mobile Money</label><input type="tel" placeholder="0XXXXXXXXX" id="rNum"></div>
+      <div class="fld"><label>Montant à retirer (FCFA)</label><input type="number" placeholder="1000" id="rMt"></div>
+      <button class="btn-main" onclick="rNext(3)">Demander le retrait</button>
+      <button class="btn-sec" onclick="closeMod('retrait')">Annuler</button>
+    </div>
+    <div class="step" id="rS3">
+      <div class="suc-ico">⏳</div>
+      <p style="text-align:center;font-weight:700;font-size:16px;color:var(--b800);margin-bottom:6px">Retrait soumis !</p>
+      <p style="text-align:center;font-size:13px;color:var(--gr600);margin-bottom:14px">L'administrateur va traiter votre retrait dans les 24h.</p>
+      <div class="info-box">
+        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val" id="rOpConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Numéro</span><span class="i-val" id="rNumConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Montant</span><span class="i-val" id="rMtConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Statut</span><span class="i-val"><span class="bdg bdg-a">En attente</span></span></div>
+      </div>
+      <button class="btn-main" onclick="closeMod('retrait')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+</div>
+
+
+<script>
+// ============================================================
+// ⚠️  REMPLACE CES 2 VALEURS PAR TES VRAIES CLÉS SUPABASE
+// Va sur : supabase.com → ton projet → Settings → API
+// ============================================================
+const SUPABASE_URL = 'https://ijevzmccbguccnjjugyn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IVhnvdSBCYDYHw2ztHc_1A_v3mzMShO';
+// ============================================================
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+var bal=3500, selD='', selR='', doneMissions={}, mDone=0;
+var user = null;
+
+function fmt(n){return n.toLocaleString('fr-FR');}
+function updBal(){document.getElementById('balAmt').innerHTML=fmt(bal)+' <span style="font-size:17px;font-weight:400">FCFA</span>';}
+function toast(msg,dur){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},dur||2500);}
+
+function swTab(tab){
+  document.querySelectorAll('.tab').forEach(function(b,i){b.classList.toggle('on',(i===0&&tab==='login')||(i===1&&tab==='reg'));});
+  document.getElementById('fLogin').classList.toggle('on',tab==='login');
+  document.getElementById('fReg').classList.toggle('on',tab==='reg');
+}
+
+async function doRegister(){
+  const name = document.getElementById('rName').value;
+  const phone = document.getElementById('rPhone').value;
+  const pass = document.getElementById('rPass').value;
+  const ref = document.getElementById('rRef').value || urlRef;
+
+  // On utilise le téléphone comme email fictif pour Supabase
+  // (Supabase auth nécessite un email OU un téléphone configuré)
+  const fakeEmail = phone.replace(/\s/g,'') + '@mindcash.app';
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: fakeEmail,
+    password: pass
+  });
+
+  if(error){ toast(error.message); return; }
+
+  let referredBy = null;
+  if(ref){
+    const { data: refUser } = await supabaseClient
+      .from('users')
+      .select('id')
+      .eq('ref_code', ref)
+      .single();
+    if(refUser){ referredBy = refUser.id; }
+  }
+
+  await supabaseClient.from('users').insert({
+    id: data.user.id,
+    name: name,
+    phone: phone,
+    balance: 0,
+    ref_code: "MC-" + Math.floor(Math.random()*1000000),
+    referred_by: referredBy
+  });
+
+  toast("✅ Compte créé ! Connectez-vous.");
+  swTab('login');
+}
+
+async function doLogin(){
+  const phone = document.getElementById('lPhone').value;
+  const pass = document.getElementById('lPass').value;
+
+  // Même logique : on reconstitue le fakeEmail
+  const fakeEmail = phone.replace(/\s/g,'') + '@mindcash.app';
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: fakeEmail,
+    password: pass
+  });
+
+  if(error){ toast(error.message); return; }
+
+  user = data.user;
+  await loadUser();
+  document.getElementById('sAuth').classList.remove('on');
+  document.getElementById('sMain').classList.add('on');
+}
+
+async function loadUser(){
+  const { data, error } = await supabaseClient
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  if(error){ console.error(error); toast("Erreur chargement utilisateur"); return; }
+
+  bal = data.balance;
+  updBal();
+  setUser(data.name, data.phone);
+  document.getElementById('refCode').textContent = data.ref_code || '';
+
+  if(!data.is_active){
+    toast("⚠️ Faites un dépôt pour activer votre compte");
+  }
+}
+
+async function checkUser(){
+  const { data } = await supabaseClient.auth.getUser();
+  if(data.user){
+    user = data.user;
+    await loadUser();
+    document.getElementById('sAuth').classList.remove('on');
+    document.getElementById('sMain').classList.add('on');
+  }
+}
+
+function getRefFromURL(){
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('ref');
+}
+let urlRef = getRefFromURL();
+
+// Lance au démarrage
+checkUser();
+
+async function claimBonus(){
+  if(!user){ toast("Non connecté"); return; }
+  const { data: u } = await supabaseClient
+    .from('users')
+    .select('is_active')
+    .eq('id', user.id)
+    .single();
+
+  if(!u || !u.is_active){ toast("Compte non activé !"); return; }
+
+  let gain = 200;
+  await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
+  await supabaseClient.from('transactions').insert({ user_id: user.id, type: "bonus", amount: gain });
+
+  bal += gain; updBal();
+  document.getElementById('bonusBar').style.width='100%';
+  document.getElementById('tBonus').classList.add('done');
+  toast('🎁 +200 FCFA — Bonus réclamé !');
+  addTx('Bonus quotidien','+200 FCFA','var(--g600)');
+}
+
+function watchAd(id){
+  var gains=[0,50,100,75];
+  var g=gains[id];
+  bal+=g;updBal();
+  document.getElementById('tAd'+id).classList.add('done');
+  toast('📢 +'+g+' FCFA — Pub regardée !');
+  addTx('Pub regardée','+'+g+' FCFA','var(--g600)');
+}
+
+function doMission(id,name,gain){
+  if(doneMissions[id]){toast('Mission déjà accomplie');return;}
+  doneMissions[id]=true;
+  bal+=parseInt(gain);updBal();
+  mDone++;
+  document.getElementById('mCount').textContent=mDone;
+  var el=document.getElementById('tM'+id)||document.getElementById('tA'+id);
+  if(el)el.classList.add('done');
+  toast('✅ +'+gain+' FCFA — '+name+' !');
+  addTx('Mission: '+name,'+'+gain+' FCFA','var(--g600)');
+}
+
+function setUser(name,phone){
+  var init=name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+  document.getElementById('uName').textContent=name.split(' ')[0];
+  document.getElementById('uAvatar').textContent=init;
+  document.getElementById('profAvatar').textContent=init;
+  document.getElementById('profName').textContent=name;
+  document.getElementById('profPhone').textContent=phone;
+}
+
+function doLogout(){
+  supabaseClient.auth.signOut();
+  user = null;
+  document.getElementById('sMain').classList.remove('on');
+  document.getElementById('sAuth').classList.add('on');
+  bal=0; updBal();
+}
+
+function showPg(pg){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pg'+pg).classList.add('on');
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on');});
+  var ni=document.getElementById('ni-'+pg);
+  if(ni)ni.classList.add('on');
+  if(pg==='Home')document.getElementById('ni-home').classList.add('on');
+}
+
+function openMod(type){
+  var id='mod'+type.charAt(0).toUpperCase()+type.slice(1);
+  document.getElementById(id).classList.add('on');
+  if(type==='retrait')document.getElementById('soldeDispo').textContent=fmt(bal)+' FCFA';
+}
+
+function closeMod(type){
+  var id='mod'+type.charAt(0).toUpperCase()+type.slice(1);
+  var m=document.getElementById(id);
+  m.classList.remove('on');
+  m.querySelectorAll('.step').forEach(function(s,i){s.classList.toggle('on',i===0);});
+  m.querySelectorAll('.op-btn').forEach(function(b){b.classList.remove('sel');});
+  selD='';selR='';
+}
+
+function selOp(btn,op,t){
+  if(t==='d'){selD=op;document.querySelectorAll('#dS1 .op-btn').forEach(function(b){b.classList.remove('sel');});}
+  else{selR=op;document.querySelectorAll('#rS1 .op-btn').forEach(function(b){b.classList.remove('sel');});}
+  btn.classList.add('sel');
+}
+
+function stepSwitch(pfx,from,to){
+  document.getElementById(pfx+'S'+from).classList.remove('on');
+  document.getElementById(pfx+'S'+to).classList.add('on');
+}
+
+function dNext(s){
+  if(s===2){if(!selD){toast('Choisissez un opérateur');return;}stepSwitch('d',1,2);}
+  if(s===3){
+    var num=document.getElementById('dNum').value.trim();
+    var mt=parseInt(document.getElementById('dMt').value)||0;
+    if(!num||mt<500){toast('Numéro invalide ou montant inférieur à 500 FCFA');return;}
+    document.getElementById('dOpConf').textContent=selD;
+    document.getElementById('dNumConf').textContent=num;
+    document.getElementById('dMtConf').textContent=fmt(mt)+' FCFA';
+    stepSwitch('d',2,3);
+  }
+}
+
+function rNext(s){
+  if(s===2){if(!selR){toast('Choisissez un opérateur');return;}stepSwitch('r',1,2);}
+  if(s===3){
+    var num=document.getElementById('rNum').value.trim();
+    var mt=parseInt(document.getElementById('rMt').value)||0;
+    if(!num||mt<1000){toast('Montant minimum : 1 000 FCFA');return;}
+    if(mt>bal){toast('Solde insuffisant');return;}
+    bal-=mt;updBal();
+    document.getElementById('rOpConf').textContent=selR;
+    document.getElementById('rNumConf').textContent=num;
+    document.getElementById('rMtConf').textContent=fmt(mt)+' FCFA';
+    stepSwitch('r',2,3);
+    addTx('Retrait '+selR,'−'+fmt(mt)+' FCFA','var(--r600)');
+  }
+}
+
+function addTx(label,val,color){
+  var now=new Date();
+  var t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  var row=document.createElement('div');
+  row.className='row';
+  row.innerHTML='<div><div style="font-weight:600;font-size:13px">'+label+'</div><div class="row-sub">Aujourd\'hui '+t+'</div></div><div style="color:'+color+';font-weight:700">'+val+'</div>';
+  var list=document.getElementById('txList');
+  list.insertBefore(row,list.firstChild);
+}
+
+async function copyLink(){
+  var refCode = document.getElementById('refCode').textContent;
+  var link = 'https://mindcash.app/?ref=' + refCode;
+  if(navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
+  toast('🔗 Lien de parrainage copié !');
+}
+
+document.querySelectorAll('.moverlay').forEach(function(m){
+  m.addEventListener('click',function(e){
+    if(e.target===m){var id=m.id.replace('mod','').toLowerCase();closeMod(id);}
+  });
+});
+</script>
