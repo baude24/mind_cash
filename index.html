@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MindCash</title>
-  <!-- Supabase SDK chargé dans le <head> AVANT tout script -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  
 </body>
 </html>
 <style>
@@ -177,18 +175,18 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 <div id="sMain" class="scr">
   <div class="topbar">
     <div class="topbar-info">
-      <h2>Bonjour, <span id="uName">Jean</span> 👋</h2>
-      <p>Compte <span id="uStatus" style="color:#7fc97f">actif</span> · ID: <span id="uID">MC-245781</span></p>
+      <h2>Bonjour, <span id="uName">—</span> 👋</h2>
+      <p>Compte <span id="uStatus" style="color:#7fc97f">—</span> · ID: <span id="uID">—</span></p>
     </div>
     <div class="topbar-right">
-      <div class="avatar" id="uAvatar">JD</div>
+      <div class="avatar" id="uAvatar">—</div>
       <button class="quit-btn" onclick="doLogout()">Quitter</button>
     </div>
   </div>
   <div class="bal-zone">
     <div class="bal-card">
       <div class="bal-lbl">Solde disponible</div>
-      <div class="bal-amt" id="balAmt">3 500 <span style="font-size:17px;font-weight:400">FCFA</span></div>
+      <div class="bal-amt" id="balAmt">0 <span style="font-size:17px;font-weight:400">FCFA</span></div>
       <div class="bal-sub">Mis à jour à l'instant</div>
       <div class="qa-grid">
         <button class="qa-btn" onclick="openMod('depot')"><span class="qa-ico">📥</span> Dépôt</button>
@@ -200,17 +198,14 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 
     <div class="pg on" id="pgHome">
       <div class="stats">
-        <div class="stat"><div class="lbl">Total gagné</div><div class="val">8 200</div><span class="bdg bdg-g">FCFA</span></div>
-        <div class="stat"><div class="lbl">Parrainage</div><div class="val">6</div><span class="bdg bdg-b">filleuls</span></div>
+        <div class="stat"><div class="lbl">Total gagné</div><div class="val" id="statTotalGagne">0</div><span class="bdg bdg-g">FCFA</span></div>
+        <div class="stat"><div class="lbl">Parrainage</div><div class="val" id="statFilleuls">0</div><span class="bdg bdg-b">filleuls</span></div>
         <div class="stat"><div class="lbl">Missions</div><div class="val" id="mCount">0</div><span class="bdg bdg-a">faites</span></div>
-        <div class="stat"><div class="lbl">Retraits</div><div class="val">2</div><span class="bdg bdg-g">validés</span></div>
+        <div class="stat"><div class="lbl">Retraits</div><div class="val" id="statRetraits">0</div><span class="bdg bdg-g">validés</span></div>
       </div>
       <div class="sec-title" style="margin-top:4px">Transactions récentes</div>
       <div class="card" id="txList">
-        <div class="row"><div><div style="font-weight:600;font-size:13px">Bonus quotidien</div><div class="row-sub">Aujourd'hui 09:30</div></div><div style="color:var(--g600);font-weight:700">+200 FCFA</div></div>
-        <div class="row"><div><div style="font-weight:600;font-size:13px">Pub vidéo regardée</div><div class="row-sub">Hier 18:45</div></div><div style="color:var(--g600);font-weight:700">+50 FCFA</div></div>
-        <div class="row"><div><div style="font-weight:600;font-size:13px">Retrait MTN MoMo</div><div class="row-sub">12/03 14:00</div></div><div style="color:var(--r600);font-weight:700">−2 000 FCFA</div></div>
-        <div class="row"><div><div style="font-weight:600;font-size:13px">Dépôt Airtel Money</div><div class="row-sub">10/03 10:15</div></div><div style="color:var(--g600);font-weight:700">+5 000 FCFA</div></div>
+        <div class="row" style="justify-content:center;color:var(--gr600);font-size:13px">Chargement...</div>
       </div>
     </div>
 
@@ -276,7 +271,7 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
     <div class="pg" id="pgAffil">
       <div class="sec-title">Mon lien de parrainage</div>
       <div onclick="copyLink()" style="background:var(--b50);border:1px solid #c8ddf5;border-radius:12px;padding:13px;font-size:13px;color:var(--b800);word-break:break-all;margin-bottom:12px;cursor:pointer">
-        https://mindcash.app/?ref=MC-<span id="refCode">245781</span>
+        https://mindcash.app/?ref=<span id="refCode">—</span>
         <div style="font-size:11px;margin-top:4px;color:var(--b600);font-weight:600">↑ Appuyer pour copier</div>
       </div>
 
@@ -295,62 +290,35 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
           </div>
         </div>
         <div style="font-size:12px;color:var(--gr600);background:#f8fafc;border-radius:8px;padding:8px">
-          Vous gagnez sur les dépôts et l'activité de vos filleuls sur 2 niveaux.
+          Vous gagnez sur les dépôts et l'activité de vos filleuls sur 2 niveaux uniquement.
         </div>
       </div>
 
       <div class="stats" style="margin-bottom:14px">
-        <div class="stat"><div class="lbl">Filleuls N1</div><div class="val">3</div><span class="bdg bdg-b">directs</span></div>
-        <div class="stat"><div class="lbl">Filleuls N2</div><div class="val">3</div><span class="bdg bdg-a">indirects</span></div>
-        <div class="stat"><div class="lbl">Gains N1</div><div class="val">300</div><span class="bdg bdg-g">FCFA</span></div>
-        <div class="stat"><div class="lbl">Gains N2</div><div class="val">150</div><span class="bdg bdg-a">FCFA</span></div>
+        <div class="stat"><div class="lbl">Filleuls N1</div><div class="val" id="afN1Count">0</div><span class="bdg bdg-b">directs</span></div>
+        <div class="stat"><div class="lbl">Filleuls N2</div><div class="val" id="afN2Count">0</div><span class="bdg bdg-a">indirects</span></div>
+        <div class="stat"><div class="lbl">Gains N1</div><div class="val" id="afN1Gains">0</div><span class="bdg bdg-g">FCFA</span></div>
+        <div class="stat"><div class="lbl">Gains N2</div><div class="val" id="afN2Gains">0</div><span class="bdg bdg-a">FCFA</span></div>
       </div>
 
       <div class="sec-title">Réseau de parrainage</div>
-      <div style="margin-bottom:6px">
-        <div class="tree-node">
-          <div><div style="font-size:13px;font-weight:600">Utilisateur #4892</div><div style="font-size:11px;color:var(--gr600)">Actif · rejoint 01/04 · N1</div></div>
-          <span class="bdg bdg-g">+100 FCFA</span>
-        </div>
-        <div class="tree-indent">
-          <div class="tree-node">
-            <div><div style="font-size:13px;font-weight:600">Utilisateur #6101</div><div style="font-size:11px;color:var(--gr600)">Actif · filleul de #4892 · N2</div></div>
-            <span class="bdg bdg-a">+50 FCFA</span>
-          </div>
-          <div class="tree-node">
-            <div><div style="font-size:13px;font-weight:600">Utilisateur #6245</div><div style="font-size:11px;color:var(--gr600)">Actif · filleul de #4892 · N2</div></div>
-            <span class="bdg bdg-a">+50 FCFA</span>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div><div style="font-size:13px;font-weight:600">Utilisateur #5021</div><div style="font-size:11px;color:var(--gr600)">Actif · rejoint 28/03 · N1</div></div>
-          <span class="bdg bdg-g">+100 FCFA</span>
-        </div>
-        <div class="tree-indent">
-          <div class="tree-node">
-            <div><div style="font-size:13px;font-weight:600">Utilisateur #6380</div><div style="font-size:11px;color:var(--gr600)">Actif · filleul de #5021 · N2</div></div>
-            <span class="bdg bdg-a">+50 FCFA</span>
-          </div>
-        </div>
-        <div class="tree-node">
-          <div><div style="font-size:13px;font-weight:600">Utilisateur #5187</div><div style="font-size:11px;color:var(--gr600)">En attente de dépôt · N1</div></div>
-          <span class="bdg" style="background:var(--gr50);color:var(--gr600)">0 FCFA</span>
-        </div>
+      <div id="affilTree">
+        <div style="text-align:center;color:var(--gr600);font-size:13px;padding:20px 0">Chargement...</div>
       </div>
     </div>
 
     <div class="pg" id="pgProfil">
       <div style="text-align:center;margin-bottom:1.5rem">
-        <div style="width:72px;height:72px;border-radius:50%;background:var(--b600);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:700;margin:0 auto 10px" id="profAvatar">JD</div>
-        <div style="font-size:18px;font-weight:700;color:var(--b900)" id="profName">Jean Dupont</div>
-        <div style="font-size:13px;color:var(--gr600);margin-top:3px" id="profPhone">07XXXXXXXX</div>
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--b600);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:700;margin:0 auto 10px" id="profAvatar">—</div>
+        <div style="font-size:18px;font-weight:700;color:var(--b900)" id="profName">—</div>
+        <div style="font-size:13px;color:var(--gr600);margin-top:3px" id="profPhone">—</div>
         <span class="lvl-badge lvl1" style="margin-top:8px">⭐ Niveau 1 — Starter</span>
       </div>
       <div class="card">
-        <div class="row"><div>Solde actuel</div><div class="row-val" id="profBal">3 500 FCFA</div></div>
-        <div class="row"><div>Total gagné</div><div class="row-val">8 200 FCFA</div></div>
-        <div class="row"><div>Total retiré</div><div class="row-val">2 000 FCFA</div></div>
-        <div class="row"><div>Statut compte</div><div class="row-val"><span class="bdg bdg-g">Actif</span></div></div>
+        <div class="row"><div>Solde actuel</div><div class="row-val" id="profBal">0 FCFA</div></div>
+        <div class="row"><div>Total gagné</div><div class="row-val" id="profTotalGagne">— FCFA</div></div>
+        <div class="row"><div>Total retiré</div><div class="row-val" id="profTotalRetrait">— FCFA</div></div>
+        <div class="row"><div>Statut compte</div><div class="row-val" id="profStatus"><span class="bdg bdg-a">Inactif</span></div></div>
       </div>
       <button class="btn-main danger" style="margin-top:12px" onclick="doLogout()">Se déconnecter</button>
     </div>
@@ -359,9 +327,9 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 
   <div class="bnav">
     <button class="ni on" id="ni-home" onclick="showPg('Home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" id="ni-Taches" onclick="showPg('Taches')"><span class="ni-ico">✅</span><span class="ni-lbl">Tâches</span></button>
-    <button class="ni" id="ni-Affil" onclick="showPg('Affil')"><span class="ni-ico">👥</span><span class="ni-lbl">Parrainage</span></button>
-    <button class="ni" id="ni-Profil" onclick="showPg('Profil')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" id="ni-taches" onclick="showPg('Taches')"><span class="ni-ico">✅</span><span class="ni-lbl">Tâches</span></button>
+    <button class="ni" id="ni-affil" onclick="showPg('Affil')"><span class="ni-ico">👥</span><span class="ni-lbl">Parrainage</span></button>
+    <button class="ni" id="ni-profil" onclick="showPg('Profil')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
   </div>
 </div>
 
@@ -415,7 +383,7 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
     </div>
     <div class="step" id="rS2">
       <div style="background:var(--b50);border-radius:10px;padding:10px 13px;margin-bottom:14px;font-size:13px;color:var(--b800)">
-        Solde : <strong id="soldeDispo">3 500 FCFA</strong> · Minimum : 1 000 FCFA
+        Solde : <strong id="soldeDispo">0 FCFA</strong> · Minimum : 1 000 FCFA
       </div>
       <div class="fld"><label>Numéro Mobile Money</label><input type="tel" placeholder="0XXXXXXXXX" id="rNum"></div>
       <div class="fld"><label>Montant à retirer (FCFA)</label><input type="number" placeholder="1000" id="rMt"></div>
@@ -440,46 +408,79 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 <div id="toast"></div>
 </div>
 
-
 <script>
 // ============================================================
-// ⚠️  REMPLACE CES 2 VALEURS PAR TES VRAIES CLÉS SUPABASE
-// Va sur : supabase.com → ton projet → Settings → API
+// CONFIG SUPABASE — remplacer TA_CLE_ICI par votre anon key
 // ============================================================
 const SUPABASE_URL = 'https://ijevzmccbguccnjjugyn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_IVhnvdSBCYDYHw2ztHc_1A_v3mzMShO';
-// ============================================================
-
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-var bal=3500, selD='', selR='', doneMissions={}, mDone=0;
-var user = null;
+let user = null;
+let userData = null;
+let bal = 0;
+let selD = null;
+let selR = null;
 
-function fmt(n){return n.toLocaleString('fr-FR');}
-function updBal(){document.getElementById('balAmt').innerHTML=fmt(bal)+' <span style="font-size:17px;font-weight:400">FCFA</span>';}
-function toast(msg,dur){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},dur||2500);}
-
-function swTab(tab){
-  document.querySelectorAll('.tab').forEach(function(b,i){b.classList.toggle('on',(i===0&&tab==='login')||(i===1&&tab==='reg'));});
-  document.getElementById('fLogin').classList.toggle('on',tab==='login');
-  document.getElementById('fReg').classList.toggle('on',tab==='reg');
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
 }
 
-async function doRegister(){
-  const name = document.getElementById('rName').value;
-  const phone = document.getElementById('rPhone').value;
-  const pass = document.getElementById('rPass').value;
-  const ref = document.getElementById('rRef').value || urlRef;
+// ============================================================
+// ONGLETS AUTH
+// ============================================================
+function swTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.frm').forEach(f => f.classList.remove('on'));
+  if(id === 'login') {
+    document.querySelector('.tab:first-child').classList.add('on');
+    document.getElementById('fLogin').classList.add('on');
+  } else {
+    document.querySelector('.tab:last-child').classList.add('on');
+    document.getElementById('fReg').classList.add('on');
+  }
+}
 
-  // On utilise le téléphone comme email fictif pour Supabase
-  // (Supabase auth nécessite un email OU un téléphone configuré)
-  const fakeEmail = phone.replace(/\s/g,'') + '@mindcash.app';
-
-  const { data, error } = await supabaseClient.auth.signUp({
-    email: fakeEmail,
-    password: pass
+// ============================================================
+// REF AUTO-REMPLISSAGE + VERROUILLAGE depuis URL (?ref=MC-XXXX)
+// ============================================================
+function getRefFromURL(){
+  const p = new URLSearchParams(window.location.search);
+  return p.get('ref');
+}
+const urlRef = getRefFromURL();
+if(urlRef){
+  document.addEventListener("DOMContentLoaded", () => {
+    const refInput = document.getElementById('rRef');
+    refInput.value = urlRef;
+    refInput.readOnly = true;
+    refInput.style.background = "#eee";
+    refInput.style.cursor = "not-allowed";
   });
+}
 
+// ============================================================
+// INSCRIPTION
+// ============================================================
+async function doRegister(){
+  const name = document.getElementById('rName').value.trim();
+  const phone = document.getElementById('rPhone').value.trim();
+  const pass = document.getElementById('rPass').value;
+  const ref = document.getElementById('rRef').value.trim() || null;
+
+  if(!name || !phone || !pass){ toast("Remplis tous les champs"); return; }
+
+  const email = phone + "@mindcash.app";
+
+  const { data, error } = await supabaseClient.auth.signUp({ email, password: pass });
   if(error){ toast(error.message); return; }
 
   let referredBy = null;
@@ -489,42 +490,65 @@ async function doRegister(){
       .select('id')
       .eq('ref_code', ref)
       .single();
-    if(refUser){ referredBy = refUser.id; }
+    if(refUser) referredBy = refUser.id;
   }
 
-  await supabaseClient.from('users').insert({
+  const refCode = "MC-" + Math.floor(100000 + Math.random()*899999);
+
+  const { error: insErr } = await supabaseClient.from('users').insert({
     id: data.user.id,
-    name: name,
-    phone: phone,
+    name,
+    phone,
     balance: 0,
-    ref_code: "MC-" + Math.floor(Math.random()*1000000),
+    is_active: false,
+    ref_code: refCode,
     referred_by: referredBy
   });
 
-  toast("✅ Compte créé ! Connectez-vous.");
+  if(insErr){ toast(insErr.message); return; }
+
+  // Si parrainé (niveau 1), créditer le parrain 100 FCFA
+  if(referredBy){
+    await creditReferral(referredBy, 100, data.user.id, 1);
+  }
+
+  toast("Compte créé ! Connectez-vous.");
   swTab('login');
 }
 
+// ============================================================
+// CONNEXION
+// ============================================================
 async function doLogin(){
-  const phone = document.getElementById('lPhone').value;
+  const phone = document.getElementById('lPhone').value.trim();
   const pass = document.getElementById('lPass').value;
+  const email = phone + "@mindcash.app";
 
-  // Même logique : on reconstitue le fakeEmail
-  const fakeEmail = phone.replace(/\s/g,'') + '@mindcash.app';
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email: fakeEmail,
-    password: pass
-  });
-
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
   if(error){ toast(error.message); return; }
 
   user = data.user;
   await loadUser();
+
   document.getElementById('sAuth').classList.remove('on');
   document.getElementById('sMain').classList.add('on');
 }
 
+// ============================================================
+// DÉCONNEXION
+// ============================================================
+async function doLogout(){
+  await supabaseClient.auth.signOut();
+  document.getElementById('sMain').classList.remove('on');
+  document.getElementById('sAuth').classList.add('on');
+  user = null;
+  userData = null;
+  bal = 0;
+}
+
+// ============================================================
+// CHARGER UTILISATEUR
+// ============================================================
 async function loadUser(){
   const { data, error } = await supabaseClient
     .from('users')
@@ -532,21 +556,429 @@ async function loadUser(){
     .eq('id', user.id)
     .single();
 
-  if(error){ console.error(error); toast("Erreur chargement utilisateur"); return; }
+  if(error || !data){ toast("Erreur chargement profil"); return; }
+  userData = data;
+  bal = data.balance || 0;
 
-  bal = data.balance;
   updBal();
-  setUser(data.name, data.phone);
-  document.getElementById('refCode').textContent = data.ref_code || '';
+  setUserUI(data.name, data.phone, data.ref_code, data.is_active);
+
+  // Charger stats et transactions
+  await loadTransactions();
+  await loadStats();
+  await loadAffilTree();
 
   if(!data.is_active){
-    toast("⚠️ Faites un dépôt pour activer votre compte");
+    toast("⚠️ Recharge ton compte pour activer le parrainage");
   }
 }
 
+// ============================================================
+// UI HELPERS
+// ============================================================
+function updBal(){
+  document.getElementById('balAmt').innerHTML = bal.toLocaleString('fr-FR') + ' <span style="font-size:17px;font-weight:400">FCFA</span>';
+  const profBal = document.getElementById('profBal');
+  if(profBal) profBal.textContent = bal.toLocaleString('fr-FR') + ' FCFA';
+  const soldeDispo = document.getElementById('soldeDispo');
+  if(soldeDispo) soldeDispo.textContent = bal.toLocaleString('fr-FR') + ' FCFA';
+}
+
+function setUserUI(name, phone, refCode, isActive){
+  const initials = name.split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0,2);
+  document.getElementById('uName').textContent = name.split(' ')[0];
+  document.getElementById('uAvatar').textContent = initials;
+  document.getElementById('profAvatar').textContent = initials;
+  document.getElementById('profName').textContent = name;
+  document.getElementById('profPhone').textContent = phone;
+  document.getElementById('refCode').textContent = refCode || '—';
+  document.getElementById('uID').textContent = refCode || '—';
+
+  const statusEl = document.getElementById('uStatus');
+  const profStatusEl = document.getElementById('profStatus');
+  if(isActive){
+    statusEl.textContent = 'actif';
+    statusEl.style.color = '#7fc97f';
+    profStatusEl.innerHTML = '<span class="bdg bdg-g">Actif</span>';
+  } else {
+    statusEl.textContent = 'inactif';
+    statusEl.style.color = '#e24b4a';
+    profStatusEl.innerHTML = '<span class="bdg bdg-r">Inactif</span>';
+  }
+}
+
+function showPg(id){
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  document.getElementById('pg'+id).classList.add('on');
+  document.getElementById('ni-'+id.toLowerCase()).classList.add('on');
+}
+
+function openMod(id){
+  const key = id.charAt(0).toUpperCase() + id.slice(1);
+  document.getElementById('mod'+key).classList.add('on');
+}
+
+function closeMod(id){
+  const key = id.charAt(0).toUpperCase() + id.slice(1);
+  document.getElementById('mod'+key).classList.remove('on');
+  const prefix = id === 'depot' ? 'd' : 'r';
+  document.querySelectorAll(`[id^="${prefix}S"]`).forEach(s => s.classList.remove('on'));
+  document.getElementById(prefix+'S1').classList.add('on');
+  if(prefix==='d') selD = null; else selR = null;
+  document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('sel'));
+}
+
+function selOp(el, name, type){
+  el.closest('.op-grid').querySelectorAll('.op-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  if(type==='d') selD = name; else selR = name;
+}
+
+function stepSwitch(prefix, from, to){
+  document.getElementById(prefix+'S'+from).classList.remove('on');
+  document.getElementById(prefix+'S'+to).classList.add('on');
+  if(prefix==='d' && to===3){
+    document.getElementById('dOpConf').textContent = selD;
+    document.getElementById('dNumConf').textContent = document.getElementById('dNum').value;
+    document.getElementById('dMtConf').textContent = parseInt(document.getElementById('dMt').value).toLocaleString('fr-FR') + ' FCFA';
+  }
+  if(prefix==='r' && to===3){
+    document.getElementById('rOpConf').textContent = selR;
+    document.getElementById('rNumConf').textContent = document.getElementById('rNum').value;
+    document.getElementById('rMtConf').textContent = parseInt(document.getElementById('rMt').value).toLocaleString('fr-FR') + ' FCFA';
+  }
+}
+
+// ============================================================
+// TRANSACTIONS — chargement réel
+// ============================================================
+async function loadTransactions(){
+  const { data } = await supabaseClient
+    .from('transactions')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  const txList = document.getElementById('txList');
+  if(!data || data.length === 0){
+    txList.innerHTML = '<div class="row" style="justify-content:center;color:var(--gr600);font-size:13px">Aucune transaction</div>';
+    return;
+  }
+
+  const typeLabels = {
+    deposit: 'Dépôt',
+    withdraw: 'Retrait',
+    bonus: 'Bonus quotidien',
+    ad: 'Pub regardée',
+    mission: 'Mission',
+    referral: 'Parrainage'
+  };
+
+  txList.innerHTML = data.map(tx => {
+    const isPositive = tx.type !== 'withdraw';
+    const sign = isPositive ? '+' : '−';
+    const color = isPositive ? 'var(--g600)' : 'var(--r600)';
+    const label = typeLabels[tx.type] || tx.type;
+    const date = new Date(tx.created_at).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+    return `<div class="row">
+      <div><div style="font-weight:600;font-size:13px">${label}</div><div class="row-sub">${date}</div></div>
+      <div style="color:${color};font-weight:700">${sign}${tx.amount.toLocaleString('fr-FR')} FCFA</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// STATS — chargement réel
+// ============================================================
+async function loadStats(){
+  // Total gagné (toutes transactions positives)
+  const { data: gains } = await supabaseClient
+    .from('transactions')
+    .select('amount')
+    .eq('user_id', user.id)
+    .neq('type', 'withdraw');
+
+  const totalGagne = (gains || []).reduce((s, t) => s + (t.amount || 0), 0);
+  document.getElementById('statTotalGagne').textContent = totalGagne.toLocaleString('fr-FR');
+  document.getElementById('profTotalGagne').textContent = totalGagne.toLocaleString('fr-FR') + ' FCFA';
+
+  // Total retraits validés
+  const { data: retraits } = await supabaseClient
+    .from('withdrawals')
+    .select('amount, status')
+    .eq('user_id', user.id)
+    .eq('status', 'success');
+
+  const totalRetrait = (retraits || []).reduce((s, r) => s + (r.amount || 0), 0);
+  document.getElementById('statRetraits').textContent = (retraits || []).length;
+  document.getElementById('profTotalRetrait').textContent = totalRetrait.toLocaleString('fr-FR') + ' FCFA';
+
+  // Missions faites dans la session (mCount reste en session — pas stocké côté DB ici)
+  // Filleuls N1
+  const { data: n1 } = await supabaseClient
+    .from('users')
+    .select('id')
+    .eq('referred_by', user.id);
+
+  document.getElementById('statFilleuls').textContent = (n1 || []).length;
+}
+
+// ============================================================
+// ARBRE PARRAINAGE — 2 niveaux uniquement
+// ============================================================
+async function loadAffilTree(){
+  // Niveau 1 : filleuls directs
+  const { data: n1Users } = await supabaseClient
+    .from('users')
+    .select('id, name, ref_code, is_active, created_at')
+    .eq('referred_by', user.id);
+
+  if(!n1Users || n1Users.length === 0){
+    document.getElementById('affilTree').innerHTML = '<div style="text-align:center;color:var(--gr600);font-size:13px;padding:20px 0">Pas encore de filleuls</div>';
+    document.getElementById('afN1Count').textContent = '0';
+    document.getElementById('afN2Count').textContent = '0';
+    document.getElementById('afN1Gains').textContent = '0';
+    document.getElementById('afN2Gains').textContent = '0';
+    return;
+  }
+
+  let html = '';
+  let n2Total = 0;
+  const gainsN1 = n1Users.length * 100; // 100 FCFA par filleul N1
+
+  for(const u1 of n1Users){
+    const date = new Date(u1.created_at).toLocaleDateString('fr-FR');
+    const statusTxt = u1.is_active ? 'Actif' : 'En attente de dépôt';
+    html += `<div class="tree-node">
+      <div>
+        <div style="font-size:13px;font-weight:600">${u1.name || ('Utilisateur ' + u1.ref_code)}</div>
+        <div style="font-size:11px;color:var(--gr600)">${statusTxt} · rejoint ${date} · N1</div>
+      </div>
+      <span class="bdg bdg-g">+100 FCFA</span>
+    </div>`;
+
+    // Niveau 2 : filleuls des filleuls
+    const { data: n2Users } = await supabaseClient
+      .from('users')
+      .select('id, name, ref_code, is_active, created_at')
+      .eq('referred_by', u1.id);
+
+    if(n2Users && n2Users.length > 0){
+      html += '<div class="tree-indent">';
+      for(const u2 of n2Users){
+        const date2 = new Date(u2.created_at).toLocaleDateString('fr-FR');
+        const status2 = u2.is_active ? 'Actif' : 'En attente de dépôt';
+        html += `<div class="tree-node">
+          <div>
+            <div style="font-size:13px;font-weight:600">${u2.name || ('Utilisateur ' + u2.ref_code)}</div>
+            <div style="font-size:11px;color:var(--gr600)">${status2} · filleul de ${u1.name || u1.ref_code} · N2</div>
+          </div>
+          <span class="bdg bdg-a">+50 FCFA</span>
+        </div>`;
+        n2Total++;
+      }
+      html += '</div>';
+    }
+  }
+
+  document.getElementById('affilTree').innerHTML = html;
+  document.getElementById('afN1Count').textContent = n1Users.length;
+  document.getElementById('afN2Count').textContent = n2Total;
+  document.getElementById('afN1Gains').textContent = gainsN1.toLocaleString('fr-FR');
+  document.getElementById('afN2Gains').textContent = (n2Total * 50).toLocaleString('fr-FR');
+}
+
+// ============================================================
+// CRÉDIT PARRAINAGE — 2 niveaux uniquement
+// ============================================================
+async function creditReferral(sponsorId, amount, newUserId, level){
+  // Créditer le sponsor
+  await supabaseClient.rpc('increment_balance', { uid: sponsorId, amount });
+  await supabaseClient.from('transactions').insert({
+    user_id: sponsorId,
+    type: 'referral',
+    amount,
+    status: 'success'
+  });
+
+  // Si niveau 1, chercher et créditer le grand-parrain (niveau 2) — 50 FCFA
+  if(level === 1){
+    const { data: sponsor } = await supabaseClient
+      .from('users')
+      .select('referred_by')
+      .eq('id', sponsorId)
+      .single();
+
+    if(sponsor && sponsor.referred_by){
+      await creditReferral(sponsor.referred_by, 50, newUserId, 2);
+    }
+    // Pas de niveau 3+ — on s'arrête ici
+  }
+}
+
+// ============================================================
+// COPIER LIEN PARRAINAGE — bloqué si compte non actif
+// ============================================================
+function copyLink(){
+  if(!userData || !userData.is_active){
+    toast("⚠️ Recharge ton compte avant de parrainer");
+    return;
+  }
+  const link = "https://cashmindb.netlify.app/?ref=" + userData.ref_code;
+  navigator.clipboard.writeText(link).then(() => toast("Lien copié !")).catch(() => toast("Copie échouée"));
+}
+
+// ============================================================
+// BONUS QUOTIDIEN
+// ============================================================
+async function claimBonus(){
+  if(!userData || !userData.is_active){
+    toast("⚠️ Compte non activé. Faites un dépôt.");
+    return;
+  }
+
+  const gain = 200;
+  await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
+  await supabaseClient.from('transactions').insert({
+    user_id: user.id, type: 'bonus', amount: gain, status: 'success'
+  });
+
+  bal += gain;
+  updBal();
+  toast("+200 FCFA");
+  document.getElementById('tBonus').classList.add('done');
+  await loadTransactions();
+}
+
+// ============================================================
+// PUBLICITÉS
+// ============================================================
+function watchAd(id){
+  if(!userData || !userData.is_active){
+    toast("⚠️ Compte non activé.");
+    return;
+  }
+  const durations = {1:30, 2:60, 3:45};
+  const gains = {1:50, 2:100, 3:75};
+  const el = document.getElementById('tAd'+id);
+  toast("Pub en cours... (" + durations[id] + "s)");
+  setTimeout(async () => {
+    const gain = gains[id];
+    await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
+    await supabaseClient.from('transactions').insert({
+      user_id: user.id, type: 'ad', amount: gain, status: 'success'
+    });
+    bal += gain;
+    updBal();
+    toast("+" + gain + " FCFA");
+    if(el) el.classList.add('done');
+    const c = parseInt(document.getElementById('mCount').textContent) + 1;
+    document.getElementById('mCount').textContent = c;
+    await loadTransactions();
+  }, durations[id] * 1000);
+}
+
+// ============================================================
+// MISSIONS
+// ============================================================
+async function doMission(id, name, rewardStr){
+  if(!userData || !userData.is_active){
+    toast("⚠️ Compte non activé.");
+    return;
+  }
+  const gain = parseInt(rewardStr);
+  const elId = 'tM'+id;
+  const el = document.getElementById(elId) || document.getElementById('tA'+id);
+
+  await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
+  await supabaseClient.from('transactions').insert({
+    user_id: user.id, type: 'mission', amount: gain, status: 'success'
+  });
+
+  bal += gain;
+  updBal();
+  toast("+" + gain + " FCFA — " + name);
+  if(el) el.classList.add('done');
+  const c = parseInt(document.getElementById('mCount').textContent) + 1;
+  document.getElementById('mCount').textContent = c;
+  await loadTransactions();
+}
+
+// ============================================================
+// DÉPÔT
+// ============================================================
+async function dNext(s){
+  if(s === 2){
+    if(!selD){ toast("Choisis un opérateur"); return; }
+    stepSwitch('d', 1, 2);
+  }
+
+  if(s === 3){
+    const num = document.getElementById('dNum').value;
+    const mt = parseInt(document.getElementById('dMt').value);
+    if(!num || !mt){ toast("Remplis tous les champs"); return; }
+
+    await supabaseClient.from('deposits').insert({
+      user_id: user.id, number: num, operator: selD, amount: mt, status: 'pending'
+    });
+    await supabaseClient.from('transactions').insert({
+      user_id: user.id, type: 'deposit', amount: mt, status: 'pending'
+    });
+
+    // Activer le compte si ce n'est pas encore fait
+    if(userData && !userData.is_active){
+      await supabaseClient.from('users').update({ is_active: true }).eq('id', user.id);
+      userData.is_active = true;
+      setUserUI(userData.name, userData.phone, userData.ref_code, true);
+    }
+
+    stepSwitch('d', 2, 3);
+    toast("Dépôt envoyé !");
+    await loadTransactions();
+  }
+}
+
+// ============================================================
+// RETRAIT
+// ============================================================
+async function rNext(s){
+  if(s === 2){
+    if(!selR){ toast("Choisis un opérateur"); return; }
+    stepSwitch('r', 1, 2);
+  }
+
+  if(s === 3){
+    const num = document.getElementById('rNum').value;
+    const mt = parseInt(document.getElementById('rMt').value);
+    if(!num || !mt){ toast("Remplis tous les champs"); return; }
+    if(mt > bal){ toast("Solde insuffisant"); return; }
+    if(mt < 1000){ toast("Minimum 1 000 FCFA"); return; }
+
+    await supabaseClient.from('withdrawals').insert({
+      user_id: user.id, number: num, operator: selR, amount: mt, status: 'pending'
+    });
+    await supabaseClient.from('transactions').insert({
+      user_id: user.id, type: 'withdraw', amount: mt, status: 'pending'
+    });
+    await supabaseClient.rpc('increment_balance', { uid: user.id, amount: -mt });
+
+    bal -= mt;
+    updBal();
+    stepSwitch('r', 2, 3);
+    toast("Retrait demandé");
+    await loadTransactions();
+    await loadStats();
+  }
+}
+
+// ============================================================
+// AUTO-LOGIN
+// ============================================================
 async function checkUser(){
   const { data } = await supabaseClient.auth.getUser();
-  if(data.user){
+  if(data && data.user){
     user = data.user;
     await loadUser();
     document.getElementById('sAuth').classList.remove('on');
@@ -554,159 +986,5 @@ async function checkUser(){
   }
 }
 
-function getRefFromURL(){
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('ref');
-}
-let urlRef = getRefFromURL();
-
-// Lance au démarrage
 checkUser();
-
-async function claimBonus(){
-  if(!user){ toast("Non connecté"); return; }
-  const { data: u } = await supabaseClient
-    .from('users')
-    .select('is_active')
-    .eq('id', user.id)
-    .single();
-
-  if(!u || !u.is_active){ toast("Compte non activé !"); return; }
-
-  let gain = 200;
-  await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
-  await supabaseClient.from('transactions').insert({ user_id: user.id, type: "bonus", amount: gain });
-
-  bal += gain; updBal();
-  document.getElementById('bonusBar').style.width='100%';
-  document.getElementById('tBonus').classList.add('done');
-  toast('🎁 +200 FCFA — Bonus réclamé !');
-  addTx('Bonus quotidien','+200 FCFA','var(--g600)');
-}
-
-function watchAd(id){
-  var gains=[0,50,100,75];
-  var g=gains[id];
-  bal+=g;updBal();
-  document.getElementById('tAd'+id).classList.add('done');
-  toast('📢 +'+g+' FCFA — Pub regardée !');
-  addTx('Pub regardée','+'+g+' FCFA','var(--g600)');
-}
-
-function doMission(id,name,gain){
-  if(doneMissions[id]){toast('Mission déjà accomplie');return;}
-  doneMissions[id]=true;
-  bal+=parseInt(gain);updBal();
-  mDone++;
-  document.getElementById('mCount').textContent=mDone;
-  var el=document.getElementById('tM'+id)||document.getElementById('tA'+id);
-  if(el)el.classList.add('done');
-  toast('✅ +'+gain+' FCFA — '+name+' !');
-  addTx('Mission: '+name,'+'+gain+' FCFA','var(--g600)');
-}
-
-function setUser(name,phone){
-  var init=name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-  document.getElementById('uName').textContent=name.split(' ')[0];
-  document.getElementById('uAvatar').textContent=init;
-  document.getElementById('profAvatar').textContent=init;
-  document.getElementById('profName').textContent=name;
-  document.getElementById('profPhone').textContent=phone;
-}
-
-function doLogout(){
-  supabaseClient.auth.signOut();
-  user = null;
-  document.getElementById('sMain').classList.remove('on');
-  document.getElementById('sAuth').classList.add('on');
-  bal=0; updBal();
-}
-
-function showPg(pg){
-  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  document.getElementById('pg'+pg).classList.add('on');
-  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on');});
-  var ni=document.getElementById('ni-'+pg);
-  if(ni)ni.classList.add('on');
-  if(pg==='Home')document.getElementById('ni-home').classList.add('on');
-}
-
-function openMod(type){
-  var id='mod'+type.charAt(0).toUpperCase()+type.slice(1);
-  document.getElementById(id).classList.add('on');
-  if(type==='retrait')document.getElementById('soldeDispo').textContent=fmt(bal)+' FCFA';
-}
-
-function closeMod(type){
-  var id='mod'+type.charAt(0).toUpperCase()+type.slice(1);
-  var m=document.getElementById(id);
-  m.classList.remove('on');
-  m.querySelectorAll('.step').forEach(function(s,i){s.classList.toggle('on',i===0);});
-  m.querySelectorAll('.op-btn').forEach(function(b){b.classList.remove('sel');});
-  selD='';selR='';
-}
-
-function selOp(btn,op,t){
-  if(t==='d'){selD=op;document.querySelectorAll('#dS1 .op-btn').forEach(function(b){b.classList.remove('sel');});}
-  else{selR=op;document.querySelectorAll('#rS1 .op-btn').forEach(function(b){b.classList.remove('sel');});}
-  btn.classList.add('sel');
-}
-
-function stepSwitch(pfx,from,to){
-  document.getElementById(pfx+'S'+from).classList.remove('on');
-  document.getElementById(pfx+'S'+to).classList.add('on');
-}
-
-function dNext(s){
-  if(s===2){if(!selD){toast('Choisissez un opérateur');return;}stepSwitch('d',1,2);}
-  if(s===3){
-    var num=document.getElementById('dNum').value.trim();
-    var mt=parseInt(document.getElementById('dMt').value)||0;
-    if(!num||mt<500){toast('Numéro invalide ou montant inférieur à 500 FCFA');return;}
-    document.getElementById('dOpConf').textContent=selD;
-    document.getElementById('dNumConf').textContent=num;
-    document.getElementById('dMtConf').textContent=fmt(mt)+' FCFA';
-    stepSwitch('d',2,3);
-  }
-}
-
-function rNext(s){
-  if(s===2){if(!selR){toast('Choisissez un opérateur');return;}stepSwitch('r',1,2);}
-  if(s===3){
-    var num=document.getElementById('rNum').value.trim();
-    var mt=parseInt(document.getElementById('rMt').value)||0;
-    if(!num||mt<1000){toast('Montant minimum : 1 000 FCFA');return;}
-    if(mt>bal){toast('Solde insuffisant');return;}
-    bal-=mt;updBal();
-    document.getElementById('rOpConf').textContent=selR;
-    document.getElementById('rNumConf').textContent=num;
-    document.getElementById('rMtConf').textContent=fmt(mt)+' FCFA';
-    stepSwitch('r',2,3);
-    addTx('Retrait '+selR,'−'+fmt(mt)+' FCFA','var(--r600)');
-  }
-}
-
-function addTx(label,val,color){
-  var now=new Date();
-  var t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  var row=document.createElement('div');
-  row.className='row';
-  row.innerHTML='<div><div style="font-weight:600;font-size:13px">'+label+'</div><div class="row-sub">Aujourd\'hui '+t+'</div></div><div style="color:'+color+';font-weight:700">'+val+'</div>';
-  var list=document.getElementById('txList');
-  list.insertBefore(row,list.firstChild);
-}
-
-async function copyLink(){
-  var refCode = document.getElementById('refCode').textContent;
-  var link = 'https://cashmindb.netlify.app/?ref=' + refCode;
-  if(navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
-  toast('🔗 Lien de parrainage copié !');
-}
-
-document.querySelectorAll('.moverlay').forEach(function(m){
-  m.addEventListener('click',function(e){
-    if(e.target===m){var id=m.id.replace('mod','').toLowerCase();closeMod(id);}
-  });
-});
 </script>
-
