@@ -39,6 +39,7 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 .btn-main{width:100%;padding:12px;background:var(--b600);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
 .btn-main:hover{background:var(--b800)}
 .btn-main.danger{background:var(--r600)}
+.btn-main:disabled{background:#aaa;cursor:not-allowed}
 .hint-text{color:var(--b200);font-size:12px;text-align:center;margin-top:1rem}
 .topbar{background:var(--b800);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .topbar-info h2{color:#fff;font-size:15px;font-weight:600}
@@ -85,7 +86,6 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 .pbar{background:#e8eff8;border-radius:4px;height:5px;margin-top:6px}
 .pfill{background:var(--b400);border-radius:4px;height:5px}
 .task.done{opacity:0.6;pointer-events:none}
-.task.done .task-rew::after{content:'checkmark';margin-left:4px;color:var(--g600)}
 .bnav{position:sticky;bottom:0;background:#fff;border-top:1px solid #e2eaf4;display:flex;padding:6px 0 2px;z-index:50;flex-shrink:0}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px;border:none;background:transparent}
 .ni-ico{font-size:20px}
@@ -94,12 +94,9 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 .pg{display:none}.pg.on{display:block}
 .moverlay{display:none;position:absolute;inset:0;background:rgba(4,44,83,0.55);z-index:200;align-items:flex-end}
 .moverlay.on{display:flex}
-.mbox{background:#fff;border-radius:22px 22px 0 0;width:100%;padding:1.5rem;max-height:82vh;overflow-y:auto}
+.mbox{background:#fff;border-radius:22px 22px 0 0;width:100%;padding:1.5rem;max-height:88vh;overflow-y:auto}
 .mhandle{width:36px;height:4px;background:#dde4ee;border-radius:2px;margin:0 auto 1.25rem}
 .mtitle{font-size:17px;font-weight:700;color:var(--b800);margin-bottom:1.25rem}
-.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem}
-.op-btn{background:var(--b50);border:1px solid #c8ddf5;border-radius:12px;padding:13px 8px;font-size:13px;color:var(--b800);cursor:pointer;font-weight:600;text-align:center}
-.op-btn:hover,.op-btn.sel{background:var(--b600);color:#fff;border-color:var(--b600)}
 .step{display:none}.step.on{display:block}
 .info-box{background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:14px}
 .i-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eef2f8;font-size:13px}
@@ -126,10 +123,20 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 .act-info{background:var(--b50);border-radius:10px;padding:12px;margin-bottom:1.25rem;font-size:13px;color:var(--b800);text-align:left}
 .act-info div{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #dde4ee}
 .act-info div:last-child{border-bottom:none}
+/* USSD */
+.ussd-box{background:#042C53;border-radius:14px;padding:16px;margin-bottom:16px;text-align:center}
+.ussd-title{color:var(--b100);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.ussd-steps{text-align:left;color:#fff;font-size:13px;line-height:2.2}
+.ussd-steps .ussd-code{background:var(--b600);border-radius:6px;padding:1px 8px;font-family:monospace;font-weight:700;font-size:14px}
+.ussd-timer-wrap{margin:14px 0 10px;text-align:center}
+.ussd-timer{font-size:38px;font-weight:700;color:var(--b400);letter-spacing:-1px}
+.ussd-timer-lbl{font-size:11px;color:var(--b200);margin-top:2px}
+.mtn-badge{background:#FFCC00;color:#000;border-radius:10px;padding:10px 16px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:8px;margin-bottom:14px}
 </style>
 
 <div id="shell">
 
+<!-- ══ ÉCRAN AUTH ══════════════════════════════════════════════════════════ -->
 <div id="sAuth" class="scr on">
   <div class="logo-wrap">
     <div class="logo-ico">💸</div>
@@ -157,6 +164,7 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
   <p class="hint-text">Un dépôt minimum de 5 000 FCFA est requis pour activer votre compte</p>
 </div>
 
+<!-- ══ ÉCRAN ACTIVATION ════════════════════════════════════════════════════ -->
 <div id="sActivate" class="scr">
   <div class="logo-wrap">
     <div class="logo-ico">💸</div>
@@ -168,7 +176,7 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
     <p>Pour accéder à toutes les fonctionnalités (tâches, parrainage, retraits), vous devez effectuer un dépôt d'activation.</p>
     <div class="act-info">
       <div><span>Dépôt minimum</span><strong>5 000 FCFA</strong></div>
-      <div><span>Opérateurs</span><strong>MTN · Airtel · Orange · Wave</strong></div>
+      <div><span>Opérateur accepté</span><strong>MTN MoMo uniquement</strong></div>
       <div><span>Activation</span><strong>Après validation admin</strong></div>
     </div>
     <button class="btn-main" onclick="showActivationDeposit()">💳 Faire le dépôt d'activation</button>
@@ -176,34 +184,58 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
   </div>
 </div>
 
+<!-- ══ MODAL DEPOT ACTIVATION ══════════════════════════════════════════════ -->
 <div class="moverlay" id="modActivate">
   <div class="mbox">
     <div class="mhandle"></div>
     <div class="mtitle">🔓 Dépôt d'activation</div>
+
     <div class="step on" id="aS1">
-      <div class="op-grid">
-        <div class="op-btn" onclick="selOp(this,'MTN MoMo','a')">MTN MoMo</div>
-        <div class="op-btn" onclick="selOp(this,'Airtel Money','a')">Airtel Money</div>
-        <div class="op-btn" onclick="selOp(this,'Orange Money','a')">Orange Money</div>
-        <div class="op-btn" onclick="selOp(this,'Wave','a')">Wave</div>
+      <div style="text-align:center;margin-bottom:14px">
+        <div class="mtn-badge">🟡 MTN MoMo</div>
+        <p style="font-size:13px;color:var(--gr600)">Seul MTN Mobile Money est accepté pour les dépôts.</p>
       </div>
-      <button class="btn-main" onclick="aNext(2)">Continuer</button>
-    </div>
-    <div class="step" id="aS2">
       <div style="background:var(--am50);border-radius:10px;padding:10px 13px;margin-bottom:14px;font-size:13px;color:var(--am600)">
         Montant minimum d'activation : <strong>5 000 FCFA</strong>
       </div>
-      <div class="fld"><label>Numéro de dépôt</label><input type="tel" placeholder="0XXXXXXXXX" id="aNum"></div>
+      <div class="fld"><label>Votre numéro MTN MoMo</label><input type="tel" placeholder="0XXXXXXXXX" id="aNum"></div>
       <div class="fld"><label>Montant (FCFA)</label><input type="number" placeholder="5000" min="5000" id="aMt"></div>
-      <button class="btn-main" onclick="aNext(3)">Envoyer le dépôt</button>
-      <button class="btn-sec" onclick="document.getElementById('modActivate').classList.remove('on')">Annuler</button>
+      <button class="btn-main" onclick="aNext(2)">Créer le dépôt</button>
+      <button class="btn-sec" onclick="cancelDepotActivation()">Annuler</button>
     </div>
+
+    <div class="step" id="aS2">
+      <div style="text-align:center;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:700;color:var(--b800)">⏳ Création de dépôt en cours</div>
+        <div style="font-size:12px;color:var(--gr600);margin-top:4px">Suivez les instructions ci-dessous sur votre téléphone</div>
+      </div>
+      <div class="ussd-box">
+        <div class="ussd-title">📱 Instructions MTN MoMo</div>
+        <div class="ussd-steps">
+          1. Composez <span class="ussd-code">*105#</span> sur votre téléphone<br>
+          2. Choisissez l'option <span class="ussd-code">6</span><br>
+          3. Entrez le code : <span class="ussd-code">168694</span><br>
+          4. Entrez le montant : <span class="ussd-code">5000</span><br>
+          5. Raison : <span class="ussd-code">activation compte</span><br>
+          6. Confirmez avec votre code secret MTN
+        </div>
+        <div class="ussd-timer-wrap">
+          <div class="ussd-timer" id="aTimerDisplay">2:00</div>
+          <div class="ussd-timer-lbl">Temps restant pour confirmer</div>
+        </div>
+      </div>
+      <button class="btn-main" id="aBtnConfirm" disabled onclick="aNext(3)">
+        🔒 En attente… confirmez d'abord le paiement
+      </button>
+      <button class="btn-sec" onclick="cancelDepotActivation()">Annuler</button>
+    </div>
+
     <div class="step" id="aS3">
       <div class="suc-ico">⏳</div>
       <p style="text-align:center;font-weight:700;font-size:16px;color:var(--b800);margin-bottom:6px">Dépôt soumis !</p>
       <p style="text-align:center;font-size:13px;color:var(--gr600);margin-bottom:14px">L'administrateur va valider votre dépôt et activer votre compte.</p>
       <div class="info-box">
-        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val" id="aOpConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val">MTN MoMo</span></div>
         <div class="i-row"><span class="i-lbl">Numéro</span><span class="i-val" id="aNumConf">—</span></div>
         <div class="i-row"><span class="i-lbl">Montant</span><span class="i-val" id="aMtConf">—</span></div>
         <div class="i-row"><span class="i-lbl">Statut</span><span class="i-val"><span class="bdg bdg-a">En attente de validation</span></span></div>
@@ -213,6 +245,7 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
   </div>
 </div>
 
+<!-- ══ ÉCRAN PRINCIPAL ════════════════════════════════════════════════════ -->
 <div id="sMain" class="scr">
   <div class="topbar">
     <div class="topbar-info">
@@ -240,7 +273,8 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
         </div>
       </div>
       <div class="qa-grid">
-        <button class="qa-btn" onclick="openMod('depot')"><span class="qa-ico">📥</span> Dépôt</button>
+        <!-- Le bouton dépôt est masqué si le compte est actif -->
+        <button class="qa-btn" id="btnDepotMain" onclick="openDepotSiInactif()"><span class="qa-ico">📥</span> Dépôt</button>
         <button class="qa-btn" onclick="openMod('retrait')"><span class="qa-ico">💳</span> Retrait</button>
       </div>
     </div>
@@ -275,40 +309,54 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
       <div id="adsList">
         <div style="text-align:center;color:var(--gr600);font-size:13px;padding:16px 0">Chargement des publicités...</div>
       </div>
+
+      <!-- ================================================================
+           MISSIONS SPÉCIALES — Remplacez les liens par les vôtres
+           ================================================================ -->
       <div class="sec-title" style="margin-top:14px">Missions spéciales</div>
-      <div class="task" id="tM1" onclick="doMission(1,'Canal Telegram officiel','500')">
+
+      <!-- TELEGRAM -->
+      <div class="task" id="tM1" onclick="doMissionLink(1,'Canal Telegram officiel','500','https://t.me/VOTRE_CANAL_TELEGRAM')">
         <div class="task-ico" style="background:var(--b50)">📋</div>
         <div class="task-body"><div class="task-title">Rejoindre notre canal Telegram</div><div class="task-desc">Page officielle Mind Cash</div></div>
         <div class="task-rew">+500 FCFA</div>
       </div>
-      <div class="task" id="tM2" onclick="doMission(2,'Page Facebook officielle','400')">
+
+      <!-- FACEBOOK -->
+      <div class="task" id="tM2" onclick="doMissionLink(2,'Page Facebook officielle','400','https://facebook.com/VOTRE_PAGE_FACEBOOK')">
         <div class="task-ico" style="background:var(--b50)">📘</div>
         <div class="task-body"><div class="task-title">Suivre notre page Facebook</div><div class="task-desc">Page officielle Mind Cash</div></div>
         <div class="task-rew">+400 FCFA</div>
       </div>
-      <div class="task" id="tM3" onclick="doMission(3,'Compte TikTok créateur','300')">
+
+      <!-- TIKTOK -->
+      <div class="task" id="tM3" onclick="doMissionLink(3,'Compte TikTok créateur','300','https://tiktok.com/@VOTRE_COMPTE_TIKTOK')">
         <div class="task-ico" style="background:var(--b50)">🎵</div>
         <div class="task-body"><div class="task-title">Suivre le créateur sur TikTok</div><div class="task-desc">Compte officiel du créateur</div></div>
         <div class="task-rew">+300 FCFA</div>
       </div>
-      <div class="task" id="tM4" onclick="doMission(4,'Chaîne YouTube','600')">
+
+      <!-- YOUTUBE -->
+      <div class="task" id="tM4" onclick="doMissionLink(4,'Chaîne YouTube','600','https://youtube.com/@baude_ognango_officiel?si=0gIwU-OHXxQanbgv')">
         <div class="task-ico" style="background:var(--r50)">▶️</div>
         <div class="task-body"><div class="task-title">S'abonner à notre YouTube</div><div class="task-desc">Chaîne officielle Mind Cash</div></div>
         <div class="task-rew">+600 FCFA</div>
       </div>
-      <div id="adminTasks">
-        <div class="task" id="tAa1" onclick="doMission('a1','Tâche admin 1','250')">
-          <div class="task-ico" style="background:var(--gr50)">⭐</div>
-          <div class="task-body"><div class="task-title">Laisser un avis 5 étoiles</div><div class="task-desc">Modifiable par l'administrateur</div></div>
-          <div class="task-rew">+250 FCFA</div>
-        </div>
+
+      <!-- AVIS -->
+      <div class="task" id="tAa1" onclick="doMissionLink('a1','Laisser un avis 5 étoiles','250','https://VOTRE_LIEN_AVIS_ICI')">
+        <div class="task-ico" style="background:var(--gr50)">⭐</div>
+        <div class="task-body"><div class="task-title">Laisser un avis 5 étoiles</div><div class="task-desc">Aidez-nous à grandir !</div></div>
+        <div class="task-rew">+250 FCFA</div>
       </div>
+
+      <div id="adminTasks"></div>
     </div>
 
     <div class="pg" id="pgAffil">
       <div class="sec-title">Mon lien de parrainage</div>
       <div onclick="copyLink()" style="background:var(--b50);border:1px solid #c8ddf5;border-radius:12px;padding:13px;font-size:13px;color:var(--b800);word-break:break-all;margin-bottom:12px;cursor:pointer">
-        https://mindcash.app/?ref=<span id="refCode">—</span>
+        https://cashmind.pages.dev/?ref=<span id="refCode">—</span>
         <div style="font-size:11px;margin-top:4px;color:var(--b600);font-weight:600">Appuyer pour copier</div>
       </div>
       <div style="background:#fff;border:1px solid #e2eaf4;border-radius:14px;padding:12px 14px;margin-bottom:14px">
@@ -368,77 +416,36 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
   </div>
 </div>
 
-<!-- MODAL DEPOT -->
-<div class="moverlay" id="modDepot">
-  <div class="mbox">
-    <div class="mhandle"></div>
-    <div class="mtitle">📥 Faire un dépôt</div>
-    <div class="step on" id="dS1">
-      <div class="op-grid">
-        <div class="op-btn" onclick="selOp(this,'MTN MoMo','d')">MTN MoMo</div>
-        <div class="op-btn" onclick="selOp(this,'Airtel Money','d')">Airtel Money</div>
-        <div class="op-btn" onclick="selOp(this,'Orange Money','d')">Orange Money</div>
-        <div class="op-btn" onclick="selOp(this,'Wave','d')">Wave</div>
-      </div>
-      <button class="btn-main" onclick="dNext(2)">Continuer</button>
-      <button class="btn-sec" onclick="closeMod('depot')">Annuler</button>
-    </div>
-    <div class="step" id="dS2">
-      <div style="background:var(--b50);border-radius:10px;padding:10px 13px;margin-bottom:14px;font-size:13px;color:var(--b800)">
-        Montant minimum : <strong>5 000 FCFA</strong>
-      </div>
-      <div class="fld"><label>Numéro de dépôt</label><input type="tel" placeholder="0XXXXXXXXX" id="dNum"></div>
-      <div class="fld"><label>Montant (FCFA)</label><input type="number" placeholder="5000" min="5000" id="dMt"></div>
-      <button class="btn-main" onclick="dNext(3)">Confirmer</button>
-      <button class="btn-sec" onclick="closeMod('depot')">Annuler</button>
-    </div>
-    <div class="step" id="dS3">
-      <div class="suc-ico">✅</div>
-      <p style="text-align:center;font-weight:700;font-size:16px;color:var(--b800);margin-bottom:6px">Dépôt soumis !</p>
-      <div class="info-box">
-        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val" id="dOpConf">—</span></div>
-        <div class="i-row"><span class="i-lbl">Numéro</span><span class="i-val" id="dNumConf">—</span></div>
-        <div class="i-row"><span class="i-lbl">Montant</span><span class="i-val" id="dMtConf">—</span></div>
-      </div>
-      <button class="btn-main" onclick="closeMod('depot')">Fermer</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL RETRAIT -->
+<!-- ══ MODAL RETRAIT (MTN MoMo uniquement) ════════════════════════════════ -->
 <div class="moverlay" id="modRetrait">
   <div class="mbox">
     <div class="mhandle"></div>
     <div class="mtitle">💳 Retrait</div>
+
     <div class="step on" id="rS1">
-      <div class="op-grid">
-        <div class="op-btn" onclick="selOp(this,'MTN MoMo','r')">MTN MoMo</div>
-        <div class="op-btn" onclick="selOp(this,'Airtel Money','r')">Airtel Money</div>
-        <div class="op-btn" onclick="selOp(this,'Orange Money','r')">Orange Money</div>
-        <div class="op-btn" onclick="selOp(this,'Wave','r')">Wave</div>
+      <div style="text-align:center;margin-bottom:14px">
+        <div class="mtn-badge">🟡 MTN MoMo</div>
+        <p style="font-size:13px;color:var(--gr600)">Les retraits se font uniquement via MTN Mobile Money.</p>
       </div>
-      <button class="btn-main" onclick="rNext(2)">Continuer</button>
-    </div>
-    <div class="step" id="rS2">
       <div style="background:var(--b50);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:13px;color:var(--b800)">
-        Solde : <strong id="soldeDispo">0 FCFA</strong> · Minimum : 4 450 FCFA
+        Solde disponible : <strong id="soldeDispo">0 FCFA</strong><br>
+        Montant minimum : <strong>4 450 FCFA</strong>
       </div>
       <div class="fld">
-        <label>Numéro Mobile Money</label>
+        <label>Votre numéro MTN MoMo</label>
         <input type="tel" placeholder="0XXXXXXXXX" id="rNum">
       </div>
       <div class="fld">
         <label>Montant à retirer (FCFA)</label>
         <input type="number" placeholder="4450" id="rMt" oninput="updateFrais()">
       </div>
-      <!-- CALCUL FRAIS EN TEMPS RÉEL -->
       <div class="frais-box" id="fraisBox" style="display:none">
         <div class="frais-row">
           <span class="frais-lbl">Montant demandé</span>
           <span class="frais-val" id="fraisMtBrut">—</span>
         </div>
         <div class="frais-row">
-          <span class="frais-lbl">Frais (9,5%)</span>
+          <span class="frais-lbl">Frais (5,5%)</span>
           <span class="frais-val" id="fraisMontant">—</span>
         </div>
         <div class="frais-row" style="border-top:1px solid #f5d598;margin-top:4px;padding-top:6px">
@@ -446,18 +453,19 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
           <span class="frais-net-val" id="fraisNet">—</span>
         </div>
       </div>
-      <button class="btn-main" onclick="rNext(3)">Demander le retrait</button>
+      <button class="btn-main" onclick="doRetrait()">Demander le retrait</button>
       <button class="btn-sec" onclick="closeMod('retrait')">Annuler</button>
     </div>
-    <div class="step" id="rS3">
+
+    <div class="step" id="rS2">
       <div class="suc-ico">⏳</div>
       <p style="text-align:center;font-weight:700;font-size:16px;color:var(--b800);margin-bottom:6px">Retrait soumis !</p>
       <p style="text-align:center;font-size:13px;color:var(--gr600);margin-bottom:14px">L'administrateur va traiter votre retrait dans les 24h.</p>
       <div class="info-box">
-        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val" id="rOpConf">—</span></div>
+        <div class="i-row"><span class="i-lbl">Opérateur</span><span class="i-val">MTN MoMo</span></div>
         <div class="i-row"><span class="i-lbl">Numéro</span><span class="i-val" id="rNumConf">—</span></div>
         <div class="i-row"><span class="i-lbl">Montant demandé</span><span class="i-val" id="rMtConf">—</span></div>
-        <div class="i-row"><span class="i-lbl">Frais (9,5%)</span><span class="i-val" id="rFraisConf" style="color:var(--am600)">—</span></div>
+        <div class="i-row"><span class="i-lbl">Frais (5,5%)</span><span class="i-val" id="rFraisConf" style="color:var(--am600)">—</span></div>
         <div class="i-row"><span class="i-lbl" style="color:var(--g800);font-weight:700">Vous recevrez</span><span class="i-val" style="color:var(--g800)" id="rNetConf">—</span></div>
         <div class="i-row"><span class="i-lbl">Statut</span><span class="i-val"><span class="bdg bdg-a">En attente</span></span></div>
       </div>
@@ -470,31 +478,61 @@ body{font-family:system-ui,sans-serif;background:#f0f4f8;min-height:100vh;displa
 </div>
 
 <script>
-const SUPABASE_URL = 'https://cmvlqaiibbtswgalgtvz.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_ymq6yh7Ohi_ZLKDXUPnc3Q_mT0si92G';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+/* ════════════════════════════════════════════════════════════════════════
+   CONFIG — remplacez par vos vraies valeurs
+   ════════════════════════════════════════════════════════════════════════ */
+const SUPABASE_URL  = 'https://cmvlqaiibbtswgalgtvz.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_ymq6yh7Ohi_ZLKDXUPnc3Q_mT0si92G';
 
-const DEPOT_MIN = 5000;
-const RETRAIT_MIN = 4450;
+// ⚠️ Remplacez par le token de votre bot Telegram et l'ID du chat admin
+const TELEGRAM_BOT_TOKEN = 'VOTRE_BOT_TOKEN_ICI';
+const TELEGRAM_CHAT_ID   = 'VOTRE_CHAT_ID_ICI';
+
+const DEPOT_MIN    = 5000;
+const RETRAIT_MIN  = 4450;
 const FRAIS_PERCENT = 9.5;
+const TIMER_SECONDS = 120; // 2 minutes
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let user = null;
 let userData = null;
 let bal = 0;
-let selD = null;
-let selR = null;
-let selA = null;
 let completedMissions = new Set();
+let dTimerInterval = null;
+let aTimerInterval = null;
+// Stocke l'ID du dernier dépôt inséré (pour la notification bot)
+let pendingDepositId = null;
+let pendingActivationId = null;
 
+/* ── TOAST ──────────────────────────────────────────────────────────────── */
 let toastTimer = null;
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.display = 'block';
   if(toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+  toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3200);
 }
 
+/* ── TELEGRAM NOTIFICATION ──────────────────────────────────────────────── */
+async function sendTelegramNotif(text) {
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: text,
+        parse_mode: 'HTML'
+      })
+    });
+  } catch(e) {
+    console.error('Telegram notif error:', e);
+  }
+}
+
+/* ── AUTH ───────────────────────────────────────────────────────────────── */
 function swTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
   document.querySelectorAll('.frm').forEach(f => f.classList.remove('on'));
@@ -516,10 +554,10 @@ if(urlRef){
 }
 
 async function doRegister(){
-  const name = document.getElementById('rName').value.trim();
+  const name  = document.getElementById('rName').value.trim();
   const phone = document.getElementById('rPhone').value.trim();
-  const pass = document.getElementById('rPass').value;
-  const ref = document.getElementById('rRef').value.trim() || null;
+  const pass  = document.getElementById('rPass').value;
+  const ref   = document.getElementById('rRef').value.trim() || null;
   if(!name || !phone || !pass){ toast("Remplis tous les champs"); return; }
   const { data, error } = await supabaseClient.auth.signUp({ email: phone + "@mindcash.app", password: pass });
   if(error){ toast(error.message); return; }
@@ -530,7 +568,9 @@ async function doRegister(){
     else toast("Code parrain invalide");
   }
   const refCode = "MC-" + Math.floor(100000 + Math.random()*899999);
-  const { error: insErr } = await supabaseClient.from('users').insert({ id: data.user.id, name, phone, balance: 0, is_active: false, ref_code: refCode, referred_by: referredBy });
+  const { error: insErr } = await supabaseClient.from('users').insert({
+    id: data.user.id, name, phone, balance: 0, is_active: false, ref_code: refCode, referred_by: referredBy
+  });
   if(insErr){ toast(insErr.message); return; }
   toast("Compte créé ! Connectez-vous.");
   swTab('login');
@@ -538,7 +578,7 @@ async function doRegister(){
 
 async function doLogin(){
   const phone = document.getElementById('lPhone').value.trim();
-  const pass = document.getElementById('lPass').value;
+  const pass  = document.getElementById('lPass').value;
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email: phone + "@mindcash.app", password: pass });
   if(error){ toast(error.message); return; }
   user = data.user;
@@ -568,6 +608,9 @@ async function loadUser(){
   }
   document.getElementById('sActivate').classList.remove('on');
   document.getElementById('sMain').classList.add('on');
+  // Masquer le bouton Dépôt si le compte est déjà actif
+  const btnDepot = document.getElementById('btnDepotMain');
+  if(btnDepot) btnDepot.style.display = 'none';
   updBal();
   setUserUI(data.name, data.phone, data.ref_code, data.is_active);
   await loadTransactions();
@@ -578,48 +621,7 @@ async function loadUser(){
   await loadCompletedMissions();
 }
 
-async function loadCompletedMissions(){
-  const { data } = await supabaseClient.from('transactions').select('meta').eq('user_id', user.id).eq('type', 'mission');
-  if(data){
-    data.forEach(tx => {
-      if(tx.meta && tx.meta.mission_id !== undefined){
-        completedMissions.add(String(tx.meta.mission_id));
-        const el = document.getElementById('tM'+tx.meta.mission_id) || document.getElementById('tAa'+tx.meta.mission_id);
-        if(el) el.classList.add('done');
-      }
-    });
-  }
-}
-
-async function loadDepotBalance(){
-  const { data: deps } = await supabaseClient.from('deposits').select('amount, status').eq('user_id', user.id);
-  const totalDepose = (deps || []).filter(d => d.status === 'success').reduce((s,d) => s+(d.amount||0), 0);
-  document.getElementById('totalDeposeAmt').textContent = totalDepose.toLocaleString('fr-FR') + ' FCFA';
-  const p = document.getElementById('profTotalDepose');
-  if(p) p.textContent = totalDepose.toLocaleString('fr-FR') + ' FCFA';
-
-  // Retraits en attente
-  const { data: rets } = await supabaseClient.from('withdrawals').select('amount, status').eq('user_id', user.id).eq('status', 'pending');
-  const totalRetPending = (rets || []).reduce((s,r) => s+(r.amount||0), 0);
-  document.getElementById('retraitsPendingAmt').textContent = totalRetPending.toLocaleString('fr-FR') + ' FCFA';
-}
-
-async function loadAds(){
-  const today = new Date().toISOString().split('T')[0];
-  const { data: ads } = await supabaseClient.from('ads').select('*').eq('is_active', true).order('created_at', { ascending: false });
-  const adsList = document.getElementById('adsList');
-  if(!ads || ads.length === 0){
-    adsList.innerHTML = '<div style="text-align:center;color:var(--gr600);font-size:13px;padding:16px 0;background:#fff;border-radius:14px;border:1px solid #e2eaf4">Aucune publicité disponible pour aujourd\'hui</div>';
-    return;
-  }
-  const { data: watchedToday } = await supabaseClient.from('transactions').select('meta').eq('user_id', user.id).eq('type', 'ad').gte('created_at', today + 'T00:00:00');
-  const watchedAdIds = new Set((watchedToday || []).map(t => t.meta && t.meta.ad_id ? String(t.meta.ad_id) : null).filter(Boolean));
-  adsList.innerHTML = ads.map(ad => {
-    const done = watchedAdIds.has(String(ad.id));
-    return `<div class="task ${done ? 'done' : ''}" id="ad-${ad.id}" onclick="watchAd(${ad.id},${ad.duration_seconds},${ad.reward})"><div class="task-ico" style="background:var(--b50)">${ad.icon || '📢'}</div><div class="task-body"><div class="task-title">${ad.title}</div><div class="task-desc">${ad.description || 'Regarder ' + ad.duration_seconds + ' secondes'}</div></div><div class="task-rew">+${ad.reward} FCFA</div></div>`;
-  }).join('');
-}
-
+/* ── UI HELPERS ─────────────────────────────────────────────────────────── */
 function updBal(){
   document.getElementById('balAmt').innerHTML = bal.toLocaleString('fr-FR') + ' <span style="font-size:17px;font-weight:400">FCFA</span>';
   const p = document.getElementById('profBal');
@@ -655,87 +657,233 @@ function showPg(id){
   document.getElementById('ni-'+id.toLowerCase()).classList.add('on');
 }
 
-function openMod(id){ document.getElementById('mod'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('on'); }
+function openMod(id){
+  document.getElementById('mod'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('on');
+}
 
 function closeMod(id){
   const key = id.charAt(0).toUpperCase()+id.slice(1);
   document.getElementById('mod'+key).classList.remove('on');
-  const prefix = id === 'depot' ? 'd' : 'r';
-  document.querySelectorAll('[id^="'+prefix+'S"]').forEach(s => s.classList.remove('on'));
-  document.getElementById(prefix+'S1').classList.add('on');
-  if(prefix==='d') selD = null; else selR = null;
-  document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('sel'));
-  if(prefix === 'r'){
+  // reset étapes retrait
+  if(id === 'retrait'){
+    document.getElementById('rS1').classList.add('on');
+    document.getElementById('rS2').classList.remove('on');
     document.getElementById('fraisBox').style.display = 'none';
     document.getElementById('rMt').value = '';
+    document.getElementById('rNum').value = '';
   }
+  if(id === 'depot' && dTimerInterval){ clearInterval(dTimerInterval); dTimerInterval = null; }
 }
 
-function selOp(el, name, type){
-  el.closest('.op-grid').querySelectorAll('.op-btn').forEach(b => b.classList.remove('sel'));
-  el.classList.add('sel');
-  if(type==='d') selD = name;
-  else if(type==='r') selR = name;
-  else if(type==='a') selA = name;
-}
-
-function stepSwitch(prefix, from, to){
-  document.getElementById(prefix+'S'+from).classList.remove('on');
-  document.getElementById(prefix+'S'+to).classList.add('on');
-  if(prefix==='d' && to===3){
-    document.getElementById('dOpConf').textContent = selD;
-    document.getElementById('dNumConf').textContent = document.getElementById('dNum').value;
-    document.getElementById('dMtConf').textContent = parseInt(document.getElementById('dMt').value).toLocaleString('fr-FR') + ' FCFA';
+/* ── EMPÊCHER DÉPÔT SI COMPTE ACTIF ────────────────────────────────────── */
+function openDepotSiInactif(){
+  if(userData && userData.is_active){
+    toast("Votre compte est déjà actif, aucun dépôt supplémentaire n'est nécessaire.");
+    return;
   }
+  showActivationDeposit();
 }
 
-// CALCUL FRAIS EN TEMPS RÉEL
-function updateFrais(){
-  const mt = parseInt(document.getElementById('rMt').value);
-  const box = document.getElementById('fraisBox');
-  if(!mt || mt < 1){ box.style.display = 'none'; return; }
-  const frais = Math.round(mt * FRAIS_PERCENT / 100);
-  const net = mt - frais;
-  document.getElementById('fraisMtBrut').textContent = mt.toLocaleString('fr-FR') + ' FCFA';
-  document.getElementById('fraisMontant').textContent = '− ' + frais.toLocaleString('fr-FR') + ' FCFA';
-  document.getElementById('fraisNet').textContent = net.toLocaleString('fr-FR') + ' FCFA';
-  box.style.display = 'block';
+/* ── COUNTDOWN TIMER ────────────────────────────────────────────────────── */
+function startCountdown(displayId, btnId, seconds){
+  let remaining = seconds;
+  const display = document.getElementById(displayId);
+  const btn     = document.getElementById(btnId);
+  if(!display || !btn) return null;
+  btn.disabled = true;
+  btn.textContent = "🔒 En attente… confirmez d'abord le paiement";
+
+  function tick(){
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    display.textContent = m + ':' + String(s).padStart(2, '0');
+    if(remaining <= 0){
+      clearInterval(interval);
+      btn.disabled = false;
+      btn.textContent = '✅ Confirmer le paiement';
+    }
+    remaining--;
+  }
+  tick();
+  const interval = setInterval(tick, 1000);
+  return interval;
 }
 
+/* ── DEPOT ACTIVATION ───────────────────────────────────────────────────── */
 function showActivationDeposit(){ document.getElementById('modActivate').classList.add('on'); }
+
 function resetActivateSteps(){
   document.querySelectorAll('[id^="aS"]').forEach(s => s.classList.remove('on'));
   const a = document.getElementById('aS1');
   if(a) a.classList.add('on');
-  selA = null;
+  if(aTimerInterval){ clearInterval(aTimerInterval); aTimerInterval = null; }
+}
+
+function cancelDepotActivation(){
+  resetActivateSteps();
+  document.getElementById('modActivate').classList.remove('on');
 }
 
 async function aNext(s){
-  if(s === 2){ if(!selA){ toast("Choisis un opérateur"); return; } document.getElementById('aS1').classList.remove('on'); document.getElementById('aS2').classList.add('on'); }
-  if(s === 3){
-    const num = document.getElementById('aNum').value;
-    const mt = parseInt(document.getElementById('aMt').value);
+  if(s === 2){
+    const num = document.getElementById('aNum').value.trim();
+    const mt  = parseInt(document.getElementById('aMt').value);
     if(!num || !mt){ toast("Remplis tous les champs"); return; }
     if(mt < DEPOT_MIN){ toast("Minimum " + DEPOT_MIN.toLocaleString('fr-FR') + " FCFA"); return; }
-    await supabaseClient.from('deposits').insert({ user_id: user.id, number: num, operator: selA, amount: mt, status: 'pending', is_activation: true });
-    await supabaseClient.from('transactions').insert({ user_id: user.id, type: 'deposit', amount: mt, status: 'pending', meta: { activation: true } });
-    document.getElementById('aOpConf').textContent = selA;
+
+    // Insérer le dépôt en base (status pending) SANS notifier le bot encore
+    const { data: dep, error: depErr } = await supabaseClient
+      .from('deposits')
+      .insert({ user_id: user.id, number: num, operator: 'MTN MoMo', amount: mt, status: 'pending', is_activation: true })
+      .select()
+      .single();
+
+    if(depErr){ toast("Erreur lors de la création du dépôt"); console.error(depErr); return; }
+
+    await supabaseClient.from('transactions').insert({
+      user_id: user.id, type: 'deposit', amount: mt, status: 'pending', meta: { activation: true }
+    });
+
+    pendingActivationId = dep ? dep.id : null;
+
+    // Passage à l'étape 2 (instructions USSD)
+    document.getElementById('aS1').classList.remove('on');
+    document.getElementById('aS2').classList.add('on');
+    aTimerInterval = startCountdown('aTimerDisplay', 'aBtnConfirm', TIMER_SECONDS);
+    toast("Dépôt créé — suivez les instructions USSD");
+  }
+
+  if(s === 3){
+    // L'utilisateur a appuyé sur "Confirmer le paiement" après le compte à rebours
+    const num = document.getElementById('aNum').value.trim();
+    const mt  = parseInt(document.getElementById('aMt').value);
+    if(aTimerInterval){ clearInterval(aTimerInterval); aTimerInterval = null; }
+
     document.getElementById('aNumConf').textContent = num;
-    document.getElementById('aMtConf').textContent = mt.toLocaleString('fr-FR') + ' FCFA';
+    document.getElementById('aMtConf').textContent  = mt.toLocaleString('fr-FR') + ' FCFA';
     document.getElementById('aS2').classList.remove('on');
     document.getElementById('aS3').classList.add('on');
+
+    // ✅ C'est ICI qu'on envoie la notification au bot Telegram
+    const msg =
+      `🔔 <b>NOUVEAU DÉPÔT D'ACTIVATION EN ATTENTE</b>\n\n` +
+      `👤 Utilisateur : <b>${userData.name}</b>\n` +
+      `📞 Tél : ${userData.phone}\n` +
+      `🆔 Ref : ${userData.ref_code}\n` +
+      `💰 Montant : <b>${mt.toLocaleString('fr-FR')} FCFA</b>\n` +
+      `📱 Opérateur : MTN MoMo\n` +
+      `📲 Numéro MoMo : ${num}\n` +
+      `🏷️ Type : Activation de compte\n\n` +
+      `✅ Veuillez vérifier et valider ce dépôt depuis le tableau de bord.`;
+    await sendTelegramNotif(msg);
+    toast("Paiement confirmé — l'admin va valider votre compte");
   }
 }
 
+/* ── RETRAIT ────────────────────────────────────────────────────────────── */
+function updateFrais(){
+  const mt  = parseInt(document.getElementById('rMt').value);
+  const box = document.getElementById('fraisBox');
+  if(!mt || mt < 1){ box.style.display = 'none'; return; }
+  const frais = Math.round(mt * FRAIS_PERCENT / 100);
+  const net   = mt - frais;
+  document.getElementById('fraisMtBrut').textContent  = mt.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('fraisMontant').textContent = '− ' + frais.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('fraisNet').textContent     = net.toLocaleString('fr-FR') + ' FCFA';
+  box.style.display = 'block';
+}
+
+async function doRetrait(){
+  const num = document.getElementById('rNum').value.trim();
+  const mt  = parseInt(document.getElementById('rMt').value);
+
+  if(!num){ toast("Entre ton numéro MTN MoMo"); return; }
+  if(!mt || isNaN(mt)){ toast("Entre un montant valide"); return; }
+  if(mt > bal){ toast("Solde insuffisant"); return; }
+  if(mt < RETRAIT_MIN){ toast("Minimum " + RETRAIT_MIN.toLocaleString('fr-FR') + " FCFA"); return; }
+
+  const frais = Math.round(mt * FRAIS_PERCENT / 100);
+  const net   = mt - frais;
+
+  // 1. Insérer dans withdrawals
+  const { data: wd, error: wErr } = await supabaseClient
+    .from('withdrawals')
+    .insert({
+      user_id:    user.id,
+      number:     num,
+      operator:   'MTN MoMo',
+      amount:     mt,
+      status:     'pending',
+      fees:       frais,
+      net_amount: net
+    })
+    .select()
+    .single();
+
+  if(wErr){ toast("Erreur lors de la demande de retrait : " + wErr.message); console.error(wErr); return; }
+
+  // 2. Insérer dans transactions
+  const { error: txErr } = await supabaseClient.from('transactions').insert({
+    user_id: user.id,
+    type:    'withdraw',
+    amount:  mt,
+    status:  'pending',
+    meta:    { fees: frais, net_amount: net, withdrawal_id: wd.id }
+  });
+  if(txErr){ console.error('tx error:', txErr); }
+
+  // 3. Déduire le solde en base
+  const { error: balErr } = await supabaseClient.rpc('increment_balance', { uid: user.id, amount: -mt });
+  if(balErr){ console.error('balance error:', balErr); }
+
+  // 4. Mettre à jour l'affichage
+  bal -= mt; updBal();
+
+  // 5. Notifier le bot Telegram
+  const msg =
+    `💳 <b>NOUVELLE DEMANDE DE RETRAIT</b>\n\n` +
+    `👤 Utilisateur : <b>${userData.name}</b>\n` +
+    `📞 Tél : ${userData.phone}\n` +
+    `🆔 Ref : ${userData.ref_code}\n` +
+    `💰 Montant demandé : <b>${mt.toLocaleString('fr-FR')} FCFA</b>\n` +
+    `💸 Frais (5,5%) : ${frais.toLocaleString('fr-FR')} FCFA\n` +
+    `✅ Net à envoyer : <b>${net.toLocaleString('fr-FR')} FCFA</b>\n` +
+    `📱 Opérateur : MTN MoMo\n` +
+    `📲 Numéro MoMo : ${num}\n\n` +
+    `⚡ Veuillez traiter ce retrait dans les 24h.`;
+  await sendTelegramNotif(msg);
+
+  // 6. Afficher confirmation à l'écran
+  document.getElementById('rNumConf').textContent   = num;
+  document.getElementById('rMtConf').textContent    = mt.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('rFraisConf').textContent = '− ' + frais.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('rNetConf').textContent   = net.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('rS1').classList.remove('on');
+  document.getElementById('rS2').classList.add('on');
+  toast("Retrait demandé — notifié à l'administrateur");
+
+  await loadTransactions();
+  await loadStats();
+  await loadDepotBalance();
+}
+
+/* ── DATA LOADERS ───────────────────────────────────────────────────────── */
 async function loadTransactions(){
-  const { data } = await supabaseClient.from('transactions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(10);
+  const { data } = await supabaseClient
+    .from('transactions').select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(10);
   const txList = document.getElementById('txList');
-  if(!data || data.length === 0){ txList.innerHTML = '<div class="row" style="justify-content:center;color:var(--gr600);font-size:13px">Aucune transaction</div>'; return; }
+  if(!data || data.length === 0){
+    txList.innerHTML = '<div class="row" style="justify-content:center;color:var(--gr600);font-size:13px">Aucune transaction</div>';
+    return;
+  }
   const labels = { deposit:'Dépôt', withdraw:'Retrait', bonus:'Bonus quotidien', ad:'Pub regardée', mission:'Mission', referral:'Parrainage' };
   txList.innerHTML = data.map(tx => {
-    const pos = tx.type !== 'withdraw';
+    const pos  = tx.type !== 'withdraw';
     const date = new Date(tx.created_at).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
-    return `<div class="row"><div><div style="font-weight:600;font-size:13px">${labels[tx.type]||tx.type}</div><div class="row-sub">${date}</div></div><div style="color:${pos?'var(--g600)':'var(--r600)'};font-weight:700">${pos?'+':'−'}${tx.amount.toLocaleString('fr-FR')} FCFA</div></div>`;
+    return `<div class="row"><div><div style="font-weight:600;font-size:13px">${labels[tx.type]||tx.type}</div><div class="row-sub">${date} · <span class="bdg ${tx.status==='success'?'bdg-g':tx.status==='pending'?'bdg-a':'bdg-r'}">${tx.status==='success'?'Validé':tx.status==='pending'?'En attente':'Échoué'}</span></div></div><div style="color:${pos?'var(--g600)':'var(--r600)'};font-weight:700">${pos?'+':'−'}${tx.amount.toLocaleString('fr-FR')} FCFA</div></div>`;
   }).join('');
 }
 
@@ -744,67 +892,77 @@ async function loadStats(){
   const totalGagne = (gains || []).reduce((s, t) => s + (t.amount || 0), 0);
   document.getElementById('statTotalGagne').textContent = totalGagne.toLocaleString('fr-FR');
   document.getElementById('profTotalGagne').textContent = totalGagne.toLocaleString('fr-FR') + ' FCFA';
+
   const { data: retraits } = await supabaseClient.from('withdrawals').select('amount, status').eq('user_id', user.id).eq('status', 'success');
   const totalRetrait = (retraits || []).reduce((s, r) => s + (r.amount || 0), 0);
   document.getElementById('statRetraits').textContent = (retraits || []).length;
   document.getElementById('profTotalRetrait').textContent = totalRetrait.toLocaleString('fr-FR') + ' FCFA';
+
   const { data: n1 } = await supabaseClient.from('users').select('id').eq('referred_by', user.id);
   document.getElementById('statFilleuls').textContent = (n1 || []).length;
 }
 
-async function loadAffilTree(){
-  const { data: n1Users } = await supabaseClient.from('users').select('id, name, ref_code, is_active, created_at').eq('referred_by', user.id);
-  if(!n1Users || n1Users.length === 0){
-    document.getElementById('affilTree').innerHTML = '<div style="text-align:center;color:var(--gr600);font-size:13px;padding:20px 0">Pas encore de filleuls</div>';
-    ['afN1Count','afN2Count','afN1Gains','afN2Gains'].forEach(id => document.getElementById(id).textContent = '0');
+async function loadDepotBalance(){
+  const { data: deps } = await supabaseClient.from('deposits').select('amount, status').eq('user_id', user.id);
+  const totalDepose = (deps || []).filter(d => d.status === 'success').reduce((s,d) => s+(d.amount||0), 0);
+  document.getElementById('totalDeposeAmt').textContent = totalDepose.toLocaleString('fr-FR') + ' FCFA';
+  const p = document.getElementById('profTotalDepose');
+  if(p) p.textContent = totalDepose.toLocaleString('fr-FR') + ' FCFA';
+
+  const { data: rets } = await supabaseClient.from('withdrawals').select('amount, status').eq('user_id', user.id).eq('status', 'pending');
+  const totalRetPending = (rets || []).reduce((s,r) => s+(r.amount||0), 0);
+  document.getElementById('retraitsPendingAmt').textContent = totalRetPending.toLocaleString('fr-FR') + ' FCFA';
+}
+
+async function loadCompletedMissions(){
+  const { data } = await supabaseClient.from('transactions').select('meta').eq('user_id', user.id).eq('type', 'mission');
+  if(data){
+    data.forEach(tx => {
+      if(tx.meta && tx.meta.mission_id !== undefined){
+        completedMissions.add(String(tx.meta.mission_id));
+        const el = document.getElementById('tM'+tx.meta.mission_id) || document.getElementById('tAa'+tx.meta.mission_id);
+        if(el) el.classList.add('done');
+      }
+    });
+  }
+}
+
+async function loadAds(){
+  const today = new Date().toISOString().split('T')[0];
+  const { data: ads } = await supabaseClient.from('ads').select('*').eq('is_active', true).order('created_at', { ascending: false });
+  const adsList = document.getElementById('adsList');
+  if(!ads || ads.length === 0){
+    adsList.innerHTML = '<div style="text-align:center;color:var(--gr600);font-size:13px;padding:16px 0;background:#fff;border-radius:14px;border:1px solid #e2eaf4">Aucune publicité disponible pour aujourd\'hui</div>';
     return;
   }
-  let html = ''; let n2Total = 0; let gainsN1 = 0;
-  for(const u1 of n1Users){
-    const date = new Date(u1.created_at).toLocaleDateString('fr-FR');
-    const badge = u1.is_active ? '<span class="bdg bdg-g">+2000 FCFA</span>' : '<span class="bdg bdg-a">En attente</span>';
-    if(u1.is_active) gainsN1 += 2000;
-    html += `<div class="tree-node"><div><div style="font-size:13px;font-weight:600">${u1.name||('Utilisateur '+u1.ref_code)}</div><div style="font-size:11px;color:var(--gr600)">${u1.is_active?'Actif':"En attente d'activation"} · ${date} · N1</div></div>${badge}</div>`;
-    const { data: n2Users } = await supabaseClient.from('users').select('id, name, ref_code, is_active, created_at').eq('referred_by', u1.id);
-    if(n2Users && n2Users.length > 0){
-      html += '<div class="tree-indent">';
-      for(const u2 of n2Users){
-        const date2 = new Date(u2.created_at).toLocaleDateString('fr-FR');
-        const badge2 = u2.is_active ? '<span class="bdg bdg-g">+700 FCFA</span>' : '<span class="bdg bdg-a">En attente</span>';
-        html += `<div class="tree-node"><div><div style="font-size:13px;font-weight:600">${u2.name||('Utilisateur '+u2.ref_code)}</div><div style="font-size:11px;color:var(--gr600)">${u2.is_active?'Actif':"En attente"} · filleul de ${u1.name||u1.ref_code} · N2</div></div>${badge2}</div>`;
-        n2Total++;
-      }
-      html += '</div>';
-    }
-  }
-  document.getElementById('affilTree').innerHTML = html;
-  document.getElementById('afN1Count').textContent = n1Users.length;
-  document.getElementById('afN2Count').textContent = n2Total;
-  document.getElementById('afN1Gains').textContent = gainsN1.toLocaleString('fr-FR');
-  document.getElementById('afN2Gains').textContent = (n2Total * 700).toLocaleString('fr-FR');
+  const { data: watchedToday } = await supabaseClient.from('transactions').select('meta').eq('user_id', user.id).eq('type', 'ad').gte('created_at', today + 'T00:00:00');
+  const watchedAdIds = new Set((watchedToday||[]).map(t => t.meta && t.meta.ad_id ? String(t.meta.ad_id) : null).filter(Boolean));
+  adsList.innerHTML = ads.map(ad => {
+    const done = watchedAdIds.has(String(ad.id));
+    return `<div class="task ${done?'done':''}" id="ad-${ad.id}" onclick="watchAd(${ad.id},${ad.duration_seconds},${ad.reward})"><div class="task-ico" style="background:var(--b50)">${ad.icon||'📢'}</div><div class="task-body"><div class="task-title">${ad.title}</div><div class="task-desc">${ad.description||'Regarder '+ad.duration_seconds+' secondes'}</div></div><div class="task-rew">+${ad.reward} FCFA</div></div>`;
+  }).join('');
 }
 
-async function triggerReferralCredits(newUserId){
-  const { data: newUser } = await supabaseClient.from('users').select('referred_by').eq('id', newUserId).single();
-  if(!newUser || !newUser.referred_by) return;
-  const sponsorId = newUser.referred_by;
-  await supabaseClient.rpc('increment_balance', { uid: sponsorId, amount: 2000 });
-  await supabaseClient.from('transactions').insert({ user_id: sponsorId, type: 'referral', amount: 2000, status: 'success', meta: { level: 1, from_user: newUserId } });
-  const { data: sponsor } = await supabaseClient.from('users').select('referred_by').eq('id', sponsorId).single();
-  if(sponsor && sponsor.referred_by){
-    await supabaseClient.rpc('increment_balance', { uid: sponsor.referred_by, amount: 700 });
-    await supabaseClient.from('transactions').insert({ user_id: sponsor.referred_by, type: 'referral', amount: 700, status: 'success', meta: { level: 2, from_user: newUserId } });
-  }
+/* ── MISSIONS ───────────────────────────────────────────────────────────── */
+async function doMissionLink(id, name, rewardStr, link){
+  if(!userData || !userData.is_active){ toast("Compte non activé."); return; }
+  const key = String(id);
+  if(completedMissions.has(key)){ toast("Mission déjà complétée !"); return; }
+  if(link && link !== '#') window.open(link, '_blank');
+  const gain = parseInt(rewardStr);
+  await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
+  await supabaseClient.from('transactions').insert({ user_id: user.id, type: 'mission', amount: gain, status: 'success', meta: { mission_id: id, mission_name: name } });
+  completedMissions.add(key);
+  bal += gain; updBal(); toast("+"+gain+" FCFA — "+name);
+  const el = document.getElementById('tM'+id) || document.getElementById('tAa'+id);
+  if(el) el.classList.add('done');
+  document.getElementById('mCount').textContent = parseInt(document.getElementById('mCount').textContent) + 1;
+  await loadTransactions();
 }
 
-function copyLink(){
-  if(!userData || !userData.is_active){ toast("Recharge ton compte avant de parrainer"); return; }
-  const link = "https://cashmindb.netlify.app/?ref=" + userData.ref_code;
-  navigator.clipboard.writeText(link).then(() => toast("Lien copié !")).catch(() => toast("Copie échouée"));
-}
-
+/* ── BONUS & PUBS ───────────────────────────────────────────────────────── */
 async function claimBonus(){
-  if(!userData || !userData.is_active){ toast("Compte non activé. Faites un dépôt."); return; }
+  if(!userData || !userData.is_active){ toast("Compte non activé."); return; }
   const gain = 200;
   await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
   await supabaseClient.from('transactions').insert({ user_id: user.id, type: 'bonus', amount: gain, status: 'success' });
@@ -829,69 +987,58 @@ function watchAd(adId, duration, gain){
   }, duration * 1000);
 }
 
-async function doMission(id, name, rewardStr){
-  if(!userData || !userData.is_active){ toast("Compte non activé."); return; }
-  const key = String(id);
-  if(completedMissions.has(key)){ toast("Mission déjà complétée !"); return; }
-  const gain = parseInt(rewardStr);
-  await supabaseClient.rpc('increment_balance', { uid: user.id, amount: gain });
-  await supabaseClient.from('transactions').insert({ user_id: user.id, type: 'mission', amount: gain, status: 'success', meta: { mission_id: id, mission_name: name } });
-  completedMissions.add(key);
-  bal += gain; updBal(); toast("+"+gain+" FCFA — "+name);
-  const el = document.getElementById('tM'+id) || document.getElementById('tAa'+id);
-  if(el) el.classList.add('done');
-  document.getElementById('mCount').textContent = parseInt(document.getElementById('mCount').textContent) + 1;
-  await loadTransactions();
-}
-
-async function dNext(s){
-  if(s === 2){ if(!selD){ toast("Choisis un opérateur"); return; } stepSwitch('d', 1, 2); }
-  if(s === 3){
-    const num = document.getElementById('dNum').value;
-    const mt = parseInt(document.getElementById('dMt').value);
-    if(!num || !mt){ toast("Remplis tous les champs"); return; }
-    if(mt < DEPOT_MIN){ toast("Minimum "+DEPOT_MIN.toLocaleString('fr-FR')+" FCFA"); return; }
-    await supabaseClient.from('deposits').insert({ user_id: user.id, number: num, operator: selD, amount: mt, status: 'pending' });
-    await supabaseClient.from('transactions').insert({ user_id: user.id, type: 'deposit', amount: mt, status: 'pending' });
-    stepSwitch('d', 2, 3);
-    toast("Dépôt envoyé !");
-    await loadTransactions();
-    await loadDepotBalance();
+/* ── PARRAINAGE ─────────────────────────────────────────────────────────── */
+async function triggerReferralCredits(newUserId){
+  const { data: newUser } = await supabaseClient.from('users').select('referred_by').eq('id', newUserId).single();
+  if(!newUser || !newUser.referred_by) return;
+  const sponsorId = newUser.referred_by;
+  await supabaseClient.rpc('increment_balance', { uid: sponsorId, amount: 2000 });
+  await supabaseClient.from('transactions').insert({ user_id: sponsorId, type: 'referral', amount: 2000, status: 'success', meta: { level: 1, from_user: newUserId } });
+  const { data: sponsor } = await supabaseClient.from('users').select('referred_by').eq('id', sponsorId).single();
+  if(sponsor && sponsor.referred_by){
+    await supabaseClient.rpc('increment_balance', { uid: sponsor.referred_by, amount: 700 });
+    await supabaseClient.from('transactions').insert({ user_id: sponsor.referred_by, type: 'referral', amount: 700, status: 'success', meta: { level: 2, from_user: newUserId } });
   }
 }
 
-async function rNext(s){
-  if(s === 2){ if(!selR){ toast("Choisis un opérateur"); return; } document.getElementById('rS1').classList.remove('on'); document.getElementById('rS2').classList.add('on'); }
-  if(s === 3){
-    const num = document.getElementById('rNum').value;
-    const mt = parseInt(document.getElementById('rMt').value);
-    if(!num || !mt){ toast("Remplis tous les champs"); return; }
-    if(mt > bal){ toast("Solde insuffisant"); return; }
-    if(mt < RETRAIT_MIN){ toast("Minimum "+RETRAIT_MIN.toLocaleString('fr-FR')+" FCFA"); return; }
-
-    const frais = Math.round(mt * FRAIS_PERCENT / 100);
-    const net = mt - frais;
-
-    await supabaseClient.from('withdrawals').insert({ user_id: user.id, number: num, operator: selR, amount: mt, status: 'pending', fees: frais, net_amount: net });
-    await supabaseClient.from('transactions').insert({ user_id: user.id, type: 'withdraw', amount: mt, status: 'pending', meta: { fees: frais, net_amount: net } });
-    await supabaseClient.rpc('increment_balance', { uid: user.id, amount: -mt });
-
-    document.getElementById('rOpConf').textContent = selR;
-    document.getElementById('rNumConf').textContent = num;
-    document.getElementById('rMtConf').textContent = mt.toLocaleString('fr-FR') + ' FCFA';
-    document.getElementById('rFraisConf').textContent = '− ' + frais.toLocaleString('fr-FR') + ' FCFA';
-    document.getElementById('rNetConf').textContent = net.toLocaleString('fr-FR') + ' FCFA';
-
-    bal -= mt; updBal();
-    document.getElementById('rS2').classList.remove('on');
-    document.getElementById('rS3').classList.add('on');
-    toast("Retrait demandé");
-    await loadTransactions();
-    await loadStats();
-    await loadDepotBalance();
-  }
+function copyLink(){
+  if(!userData || !userData.is_active){ toast("Recharge ton compte avant de parrainer"); return; }
+  const link = "https://cashmind.pages.dev/?ref=" + userData.ref_code;
+  navigator.clipboard.writeText(link).then(() => toast("Lien copié !")).catch(() => toast("Copie échouée"));
 }
 
+async function loadAffilTree(){
+  const { data: n1Users } = await supabaseClient.from('users').select('id, name, ref_code, is_active, created_at').eq('referred_by', user.id);
+  if(!n1Users || n1Users.length === 0){
+    document.getElementById('affilTree').innerHTML = '<div style="text-align:center;color:var(--gr600);font-size:13px;padding:20px 0">Pas encore de filleuls</div>';
+    ['afN1Count','afN2Count','afN1Gains','afN2Gains'].forEach(id => document.getElementById(id).textContent = '0');
+    return;
+  }
+  let html = ''; let n2Total = 0; let gainsN1 = 0;
+  for(const u1 of n1Users){
+    const date  = new Date(u1.created_at).toLocaleDateString('fr-FR');
+    const badge = u1.is_active ? '<span class="bdg bdg-g">+2100 FCFA</span>' : '<span class="bdg bdg-a">En attente</span>';
+    if(u1.is_active) gainsN1 += 2100;
+    html += `<div class="tree-node"><div><div style="font-size:13px;font-weight:600">${u1.name||('Utilisateur '+u1.ref_code)}</div><div style="font-size:11px;color:var(--gr600)">${u1.is_active?'Actif':"En attente d'activation"} · ${date} · N1</div></div>${badge}</div>`;
+    const { data: n2Users } = await supabaseClient.from('users').select('id, name, ref_code, is_active, created_at').eq('referred_by', u1.id);
+    if(n2Users && n2Users.length > 0){
+      html += '<div class="tree-indent">';
+      for(const u2 of n2Users){
+        const badge2 = u2.is_active ? '<span class="bdg bdg-g">+700 FCFA</span>' : '<span class="bdg bdg-a">En attente</span>';
+        html += `<div class="tree-node"><div><div style="font-size:13px;font-weight:600">${u2.name||('Utilisateur '+u2.ref_code)}</div><div style="font-size:11px;color:var(--gr600)">${u2.is_active?'Actif':"En attente"} · filleul de ${u1.name||u1.ref_code} · N2</div></div>${badge2}</div>`;
+        n2Total++;
+      }
+      html += '</div>';
+    }
+  }
+  document.getElementById('affilTree').innerHTML = html;
+  document.getElementById('afN1Count').textContent = n1Users.length;
+  document.getElementById('afN2Count').textContent = n2Total;
+  document.getElementById('afN1Gains').textContent = gainsN1.toLocaleString('fr-FR');
+  document.getElementById('afN2Gains').textContent = (n2Total * 700).toLocaleString('fr-FR');
+}
+
+/* ── INIT ───────────────────────────────────────────────────────────────── */
 async function checkUser(){
   const { data } = await supabaseClient.auth.getUser();
   if(data && data.user){ user = data.user; await loadUser(); }
